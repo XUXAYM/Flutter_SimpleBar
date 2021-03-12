@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/provider/cocktails_notifier.dart';
 
+import 'provider/cocktails_notifier.dart';
 import 'model/cocktail.dart';
 import 'colors.dart';
 
@@ -308,7 +308,7 @@ class CocktailGroupDropdownButton extends StatefulWidget {
 class _CocktailGroupDropdownButton extends State<CocktailGroupDropdownButton> {
   @override
   Widget build(BuildContext context) {
-    final _notifier = Provider.of<CocktailsNotifier>(context);
+    final _notifier = Provider.of<CocktailsPoolNotifier>(context);
     final ThemeData theme = Theme.of(context);
     return DropdownButton<CocktailGroup>(
       value: _notifier.group,

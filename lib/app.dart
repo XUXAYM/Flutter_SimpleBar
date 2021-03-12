@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/provider/cocktails_notifier.dart';
 
+import 'provider/pages_notifier.dart';
 import 'backdrop.dart';
+import 'cocktail_page.dart';
 import 'colors.dart';
 import 'home.dart';
+import 'ingredients_list_page.dart';
 import 'model/cocktail.dart';
 import 'category_menu_page.dart';
+import 'model/repository/cocktails_repository.dart';
 
 class SimpleBarApp extends StatefulWidget {
   @override
@@ -14,32 +17,30 @@ class SimpleBarApp extends StatefulWidget {
 }
 
 class _SimpleBarAppState extends State<SimpleBarApp> {
-  CocktailGroup _currentGroup = CocktailGroup.all;
-
-  void _onGroupTap(CocktailGroup group) {
-    setState(() {
-      _currentGroup = group;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => CocktailsNotifier(),
-      child: MaterialApp(
-        title: 'SimpleBar',
-        home: Backdrop(
-          currentGroup: CocktailGroup.all,
-          frontLayer: CocktailsListPage(),
-          backLayer: CategoryMenuPage(
-            currentGroup: _currentGroup,
-            onGroupTap: _onGroupTap,
+    return MaterialApp(
+      title: 'SimpleBar',
+      home: Backdrop(
+        currentGroup: CocktailGroup.all,
+        frontLayer: Provider.of<PagesPoolNotifier>(context).currentPage,
+        backLayer: CategoryMenuPage(
+          pages: [
+            CocktailsListPage(
+              title: 'Cocktails',
+            ),
+            IngredientListPage(
+              title: 'Ingredients',
+            ),
+            CocktailPage(
+                CocktailsRepository().loadCocktails(CocktailGroup.all)[0]),
+          ],
         ),
-          frontTitle: Text('SHRINE'),
-          backTitle: Text('MENU'),
-        ),
-        theme: _kShrineTheme,
+        frontTitle: Text('SIMPLE BAR'),
+        backTitle: Text('MENU'),
       ),
+      theme: _kShrineTheme,
     );
   }
 }
