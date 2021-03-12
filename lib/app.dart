@@ -3,13 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'provider/pages_notifier.dart';
 import 'backdrop.dart';
-import 'cocktail_page.dart';
 import 'colors.dart';
-import 'home.dart';
-import 'ingredients_list_page.dart';
-import 'model/cocktail.dart';
 import 'category_menu_page.dart';
-import 'model/repository/cocktails_repository.dart';
 
 class SimpleBarApp extends StatefulWidget {
   @override
@@ -23,20 +18,9 @@ class _SimpleBarAppState extends State<SimpleBarApp> {
     return MaterialApp(
       title: 'SimpleBar',
       home: Backdrop(
-        currentGroup: CocktailGroup.all,
+        currentPage: Provider.of<PagesPoolNotifier>(context).currentPage,
         frontLayer: Provider.of<PagesPoolNotifier>(context).currentPage,
-        backLayer: CategoryMenuPage(
-          pages: [
-            CocktailsListPage(
-              title: 'Cocktails',
-            ),
-            IngredientListPage(
-              title: 'Ingredients',
-            ),
-            CocktailPage(
-                CocktailsRepository().loadCocktails(CocktailGroup.all)[0]),
-          ],
-        ),
+        backLayer: CategoryMenuPage(),
         frontTitle: Text('SIMPLE BAR'),
         backTitle: Text('MENU'),
       ),

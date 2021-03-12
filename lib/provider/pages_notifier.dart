@@ -23,7 +23,7 @@ class PagesPoolNotifier with ChangeNotifier{
   set currentPage(Widget value){
     if(_currentPage != value){
       _currentPage = value;
-      notifyListeners();
     }
+    notifyListeners();
   }
 }

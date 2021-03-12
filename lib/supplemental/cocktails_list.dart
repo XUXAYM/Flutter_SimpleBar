@@ -19,6 +19,8 @@ class _CocktailsListState extends State<CocktailsList> {
       physics: BouncingScrollPhysics(),
       itemBuilder: (context, index) => CocktailCard(widget.cocktails[index]),
       itemCount: widget.cocktails.length,
+      shrinkWrap: true,
+      controller: ScrollController(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
         mainAxisSpacing: 16,

@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
-import 'package:provider/provider.dart';
 
-import 'provider/cocktails_notifier.dart';
-import 'model/cocktail.dart';
 import 'colors.dart';
+import 'supplemental/cocktails_dropdown_button.dart';
 
 const double _kFlingVelocity = 2.0;
 
 class Backdrop extends StatefulWidget {
-  final CocktailGroup currentGroup;
+  final Widget currentPage;
   final Widget frontLayer;
   final Widget backLayer;
   final Widget frontTitle;
   final Widget backTitle;
 
   const Backdrop({
-    @required this.currentGroup,
+    @required this.currentPage,
     @required this.frontLayer,
     @required this.backLayer,
     @required this.frontTitle,
     @required this.backTitle,
-  })  : assert(currentGroup != null),
+  })  : assert(currentPage != null),
         assert(frontLayer != null),
         assert(backLayer != null),
         assert(frontTitle != null),
@@ -101,7 +99,7 @@ class _BackdropState extends State<Backdrop>
   void didUpdateWidget(Backdrop old) {
     super.didUpdateWidget(old);
 
-    if (widget.currentGroup != old.currentGroup) {
+    if (widget.currentPage != old.currentPage) {
       _toggleBackdropLayerVisibility();
     } else if (!_frontLayerVisible) {
       _controller.fling(velocity: _kFlingVelocity);
@@ -109,21 +107,21 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
-    const double layerTitleHeight = 48.0;
-    final Size layerSize = constraints.biggest;
-    //final double layerTop = layerSize.height - layerTitleHeight;
-    final double layerRight = layerSize.width - layerTitleHeight;
+    //const double layerTitleHeight = 48.0;
+    const double layerTitleWidth = 48.0;
+    //final Size layerSize = constraints.biggest;
 
-    // Animation<RelativeRect> layerAnimation = RelativeRectTween(
-    //   begin: RelativeRect.fromLTRB(
-    //       0.0, layerTop, 0.0, layerTop - layerSize.height),
-    //   end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-    // ).animate(_controller.view);
-
-    Animation<RelativeRect> layerAnimation = RelativeRectTween(
-      begin: RelativeRect.fromLTRB(
-          layerRight, 0.0, layerRight - layerSize.width, 0.0),
-      end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
+    final panelSize = constraints.biggest;
+    // final closedPercentage = _frontLayerVisible
+    //     ? (panelSize.height - layerTitleWidth) / panelSize.height
+    //     : 1.0;
+    final closedPercentage = _frontLayerVisible
+        ? (panelSize.width - layerTitleWidth) / panelSize.width
+        : 1.0;
+    final openPercentage =  0.0 / panelSize.width;
+    final panelDetailsPosition = Tween<Offset>(
+      begin: Offset( closedPercentage,0.0),
+      end: Offset( openPercentage, 0.0),
     ).animate(_controller.view);
 
     return Stack(
@@ -133,8 +131,8 @@ class _BackdropState extends State<Backdrop>
           child: widget.backLayer,
           excluding: _frontLayerVisible,
         ),
-        PositionedTransition(
-          rect: layerAnimation,
+        SlideTransition(
+          position: panelDetailsPosition,
           child: _FrontLayer(
             onTap: _toggleBackdropLayerVisibility,
             child: widget.frontLayer,
@@ -186,30 +184,6 @@ class _BackdropTitle extends AnimatedWidget {
       softWrap: false,
       overflow: TextOverflow.ellipsis,
       child: Row(children: <Widget>[
-        // branded icon
-/*        SizedBox(
-          width: 72.0,
-          child: IconButton(
-            padding: EdgeInsets.only(right: 8.0),
-            onPressed: this.onPress,
-            icon: Stack(children: <Widget>[
-              Opacity(
-                opacity: animation.value,
-                child: ImageIcon(AssetImage('assets/slanted_menu.png')),
-              ),
-              FractionalTranslation(
-                translation: Tween<Offset>(
-                  begin: Offset.zero,
-                  end: Offset(1.0, 0.0),
-                ).evaluate(animation),
-                child: Icon(Icons.coronavirus_rounded),
-              )
-            ]
-            ),
-          ),
-        ),*/
-        // Here, we do a custom cross fade between backTitle and frontTitle.
-        // This makes a smooth animation between the two texts.
         Stack(
           children: <Widget>[
             Opacity(
@@ -300,38 +274,3 @@ class _FrontLayer extends StatelessWidget {
   }
 }
 
-class CocktailGroupDropdownButton extends StatefulWidget {
-  @override
-  _CocktailGroupDropdownButton createState() => _CocktailGroupDropdownButton();
-}
-
-class _CocktailGroupDropdownButton extends State<CocktailGroupDropdownButton> {
-  @override
-  Widget build(BuildContext context) {
-    final _notifier = Provider.of<CocktailsPoolNotifier>(context);
-    final ThemeData theme = Theme.of(context);
-    return DropdownButton<CocktailGroup>(
-      value: _notifier.group,
-      onChanged: (CocktailGroup value) => _notifier.group = value,
-      icon: Icon(
-        Icons.keyboard_arrow_down_rounded,
-        color: kShrineBrown900,
-      ),
-      iconSize: 24,
-      elevation: 16,
-      style: theme.textTheme.bodyText1.copyWith(color: kShrineBrown900),
-      underline: Container(
-        height: 2,
-        color: kShrineBrown900,
-      ),
-      items: CocktailGroup.values
-          .map<DropdownMenuItem<CocktailGroup>>((CocktailGroup value) {
-        return DropdownMenuItem<CocktailGroup>(
-          value: value,
-          child: Text(
-              value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
-        );
-      }).toList(),
-    );
-  }
-}

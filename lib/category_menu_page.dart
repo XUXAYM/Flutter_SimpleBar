@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:provider/provider.dart';
 
 import 'provider/pages_notifier.dart';
@@ -7,12 +6,7 @@ import 'colors.dart';
 import 'page.dart';
 
 class CategoryMenuPage extends StatelessWidget {
-  final List<Widget> pages;
-
-  CategoryMenuPage({
-    Key key,
-    @required this.pages,
-  }){}
+  CategoryMenuPage({ Key key,});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +16,7 @@ class CategoryMenuPage extends StatelessWidget {
           padding: EdgeInsets.only(top: 40.0),
           color: kShrinePink100,
           child: ListView(
-              children: Provider.of<PagesPoolNotifier>(context).pages
+              children: Provider.of<PagesPoolNotifier>(context, listen: false).pages
                   .map((Widget p) => _buildCategory(p, context))
                   .toList()),
         ),
@@ -31,7 +25,7 @@ class CategoryMenuPage extends StatelessWidget {
   }
 
   Widget _buildCategory(Widget page, BuildContext context) {
-    final groupString = (page as PageWithTitle).title;
+    final groupString = (page as PageWithTitle).title.toUpperCase();
     final ThemeData theme = Theme.of(context);
 
     return GestureDetector(
