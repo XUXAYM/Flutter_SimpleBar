@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:simplebar/model/cocktail.dart';
+import 'package:provider/provider.dart';
+import 'package:simplebar/provider/cocktails_notifier.dart';
 
 import 'backdrop.dart';
 import 'colors.dart';
 import 'home.dart';
+import 'model/cocktail.dart';
 import 'category_menu_page.dart';
-import 'model/product.dart';
 
 class SimpleBarApp extends StatefulWidget {
   @override
@@ -23,19 +24,22 @@ class _SimpleBarAppState extends State<SimpleBarApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SimpleBar',
-      home: Backdrop(
-        currentGroup: CocktailGroup.all,
-        frontLayer: HomePage(group: _currentGroup),
-        backLayer: CategoryMenuPage(
-          currentGroup: _currentGroup,
-          onGroupTap: _onGroupTap,
+    return ChangeNotifierProvider(
+      create: (context) => CocktailsNotifier(),
+      child: MaterialApp(
+        title: 'SimpleBar',
+        home: Backdrop(
+          currentGroup: CocktailGroup.all,
+          frontLayer: CocktailsListPage(),
+          backLayer: CategoryMenuPage(
+            currentGroup: _currentGroup,
+            onGroupTap: _onGroupTap,
+        ),
+          frontTitle: Text('SHRINE'),
+          backTitle: Text('MENU'),
+        ),
+        theme: _kShrineTheme,
       ),
-        frontTitle: Text('SHRINE'),
-        backTitle: Text('MENU'),
-      ),
-      theme: _kShrineTheme,
     );
   }
 }

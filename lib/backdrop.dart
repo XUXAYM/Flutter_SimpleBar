@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:provider/provider.dart';
+import 'package:simplebar/provider/cocktails_notifier.dart';
 
 import 'model/cocktail.dart';
 import 'colors.dart';
@@ -73,8 +75,7 @@ class _BackdropState extends State<Backdrop>
             Icons.search,
             semanticLabel: 'login', // New code
           ),
-          onPressed: () {
-          },
+          onPressed: () {},
         ),
         IconButton(
           icon: Icon(
@@ -124,7 +125,6 @@ class _BackdropState extends State<Backdrop>
           layerRight, 0.0, layerRight - layerSize.width, 0.0),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_controller.view);
-
 
     return Stack(
       key: _backdropKey,
@@ -266,25 +266,72 @@ class _FrontLayer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: onTap,
-            child: Container(
-              height: 47.0,
-              alignment: AlignmentDirectional.centerStart,
-              child: Material(
-                  elevation: 6.0,
+          Stack(
+            children: [
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: onTap,
+                child: Material(
                   shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(46.0)),
+                    borderRadius:
+                        BorderRadius.only(topLeft: Radius.circular(27.0)),
                   ),
+                  elevation: 5,
+                  child: Container(
+                    height: 47.0,
+                    alignment: AlignmentDirectional.centerStart,
+                    color: Colors.transparent,
+                  ),
+                ),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                child: CocktailGroupDropdownButton(),
+              ),
+            ],
+            alignment: AlignmentDirectional.centerEnd,
           ),
           Expanded(
             child: child,
           ),
         ],
       ),
+    );
+  }
+}
+
+class CocktailGroupDropdownButton extends StatefulWidget {
+  @override
+  _CocktailGroupDropdownButton createState() => _CocktailGroupDropdownButton();
+}
+
+class _CocktailGroupDropdownButton extends State<CocktailGroupDropdownButton> {
+  @override
+  Widget build(BuildContext context) {
+    final _notifier = Provider.of<CocktailsNotifier>(context);
+    final ThemeData theme = Theme.of(context);
+    return DropdownButton<CocktailGroup>(
+      value: _notifier.group,
+      onChanged: (CocktailGroup value) => _notifier.group = value,
+      icon: Icon(
+        Icons.keyboard_arrow_down_rounded,
+        color: kShrineBrown900,
+      ),
+      iconSize: 24,
+      elevation: 16,
+      style: theme.textTheme.bodyText1.copyWith(color: kShrineBrown900),
+      underline: Container(
+        height: 2,
+        color: kShrineBrown900,
+      ),
+      items: CocktailGroup.values
+          .map<DropdownMenuItem<CocktailGroup>>((CocktailGroup value) {
+        return DropdownMenuItem<CocktailGroup>(
+          value: value,
+          child: Text(
+              value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
+        );
+      }).toList(),
     );
   }
 }

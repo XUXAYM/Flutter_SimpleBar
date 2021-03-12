@@ -3,7 +3,6 @@ import 'package:meta/meta.dart';
 import 'model/cocktail.dart';
 
 import 'colors.dart';
-import 'model/product.dart';
 
 class CategoryMenuPage extends StatelessWidget {
   final CocktailGroup currentGroup;

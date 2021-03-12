@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'model/cocktail.dart';
+import 'package:provider/provider.dart';
+
 import 'model/repository/cocktails_repository.dart';
-import 'supplemental/cocktail_card.dart';
+import 'provider/cocktails_notifier.dart';
 import 'supplemental/cocktails_list.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({this.group: CocktailGroup.all});
-
-  final CocktailGroup group;
-
+class CocktailsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
     return SafeArea(
-      child: CocktailsList(CocktailsRepository().loadCocktails(group)),
+      child: Consumer<CocktailsNotifier>(
+        builder: (context, notifier, _)
+        => CocktailsList(CocktailsRepository().loadCocktails(notifier.group)),
+      ),
     );
   }
 }

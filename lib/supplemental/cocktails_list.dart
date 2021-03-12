@@ -6,7 +6,7 @@ import 'cocktail_card.dart';
 class CocktailsList extends StatefulWidget {
   CocktailsList(this.cocktails);
 
-  List<Cocktail> cocktails;
+  final List<Cocktail> cocktails;
 
   @override
   _CocktailsListState createState() => _CocktailsListState();
