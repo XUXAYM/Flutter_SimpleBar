@@ -4,12 +4,12 @@ enum IngredientMeasure {ml, cl, l, gr, dash, drop, pinch, tbsp, tsp, pcs, sugarc
 
 class Ingredient {
   final int id;
-  String title;
-  String description;
-  int degree;
-  IngredientMeasure measure;
+  final String title;
   double _volume;
-  String imageSource;
+  final String description;
+  final int degree;
+  final IngredientMeasure measure;
+  final String imageSource;
 
   Ingredient({
     @required this.id,
@@ -31,6 +31,12 @@ class Ingredient {
 
   @override
   String toString() => "$title (id=$id)";
+
+  @override
+  int get hashCode => id;
+
+  @override
+  bool operator ==(Object other) => other is Ingredient && other.id == id;
 
   static const Map<IngredientMeasure, double> _measuresToMl = {
     IngredientMeasure.cl: 10,

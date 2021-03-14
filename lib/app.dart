@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'page/favorite_cocktails_page.dart';
 import 'provider/pages_notifier.dart';
 import 'backdrop.dart';
 import 'colors.dart';
@@ -25,6 +26,9 @@ class _SimpleBarAppState extends State<SimpleBarApp> {
         backTitle: Text('MENU'),
       ),
       theme: _kShrineTheme,
+      routes: {
+        '/favorite': (context) => FavoriteCocktailsPage(),
+      },
     );
   }
 }
@@ -47,7 +51,6 @@ ThemeData _buildShrineTheme() {
     ),
     scaffoldBackgroundColor: kShrineBackgroundWhite,
     cardColor: kShrineBackgroundWhite,
-    textSelectionColor: kShrinePink100,
     errorColor: kShrineErrorRed,
     textTheme: _buildShrineTextTheme(base.textTheme),
     primaryTextTheme: _buildShrineTextTheme(base.primaryTextTheme),

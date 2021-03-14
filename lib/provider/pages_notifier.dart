@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:simplebar/model/cocktail.dart';
-import 'package:simplebar/model/repository/cocktails_repository.dart';
 
-import '../cocktail_page.dart';
-import '../home.dart';
-import '../ingredients_list_page.dart';
+import '../model/cocktail.dart';
+import '../model/repository/cocktails_repository.dart';
+import '../page/cocktail_page.dart';
+import '../page/home.dart';
+import '../page/ingredients_list_page.dart';
 
 class PagesPoolNotifier with ChangeNotifier{
   PagesPoolNotifier() {_currentPage = _pages.first;}

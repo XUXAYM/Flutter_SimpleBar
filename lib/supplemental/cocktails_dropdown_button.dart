@@ -26,15 +26,13 @@ class _CocktailGroupDropdownButton extends State<CocktailGroupDropdownButton> {
       elevation: 16,
       style: theme.textTheme.bodyText1.copyWith(color: kShrineBrown900),
       underline: Container(
-        height: 2,
-        color: kShrineBrown900,
+        height: 0,
       ),
       items: CocktailGroup.values
           .map<DropdownMenuItem<CocktailGroup>>((CocktailGroup value) {
         return DropdownMenuItem<CocktailGroup>(
           value: value,
-          child: Text(
-              value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
+          child: Text(value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
         );
       }).toList(),
     );

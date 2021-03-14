@@ -4,21 +4,27 @@ enum ToolType {all, glass, barman_tool, decoration, other}
 
 class Tool {
   final int id;
-  String title;
-  String description;
-  ToolType type;
+  final String title;
+  final String description;
+  final ToolType type;
   int quantity;
-  String imageSource;
+  final String imageSource;
 
   Tool({
     @required this.id,
     @required this.title,
     this.description = '',
     this.type = ToolType.other,
+    this.quantity = 1,
     this.imageSource = '',
-    this.quantity = 1
   }) : assert(id >= 0 && title.isNotEmpty && type != ToolType.all);
 
   @override
   String toString() => "$title (id=$id)";
+
+  @override
+  int get hashCode => id;
+
+  @override
+  bool operator ==(Object other) => other is Tool && other.id == id;
 }

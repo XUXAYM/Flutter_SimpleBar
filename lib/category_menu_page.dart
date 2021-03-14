@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'provider/pages_notifier.dart';
 import 'colors.dart';
-import 'page.dart';
+import 'page/page.dart';
 
 class CategoryMenuPage extends StatelessWidget {
   CategoryMenuPage({ Key key,});

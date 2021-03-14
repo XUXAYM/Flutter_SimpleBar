@@ -8,10 +8,7 @@ class IngredientListPage extends StatelessWidget with PageWithTitle {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: Text('IngredientListPage'),
-      ),
-    );
+    return Center(child: Text('IngredientListPage'));
+
   }
 }
