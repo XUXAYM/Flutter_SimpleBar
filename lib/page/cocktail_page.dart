@@ -5,7 +5,6 @@ import 'page.dart';
 
 class CocktailPage extends StatefulWidget with PageWithTitle {
   CocktailPage(this._cocktail) :
-        assert(_cocktail != null),
         title = _cocktail.title;
 
   final String title;

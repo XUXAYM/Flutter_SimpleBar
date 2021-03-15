@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RecipeStepper extends StatefulWidget {
-  RecipeStepper(this._recipe, {onFinishStepCallback: null})
-      : assert(_recipe != null);
+  RecipeStepper(this._recipe, {onFinishStepCallback: null});
   List<String> _recipe;
   VoidCallback onFinishStepCallback;
 
@@ -14,7 +13,7 @@ class _RecipeStepperState extends State<RecipeStepper> {
 
   @override
   Widget build(BuildContext context) {
-    return Stepper(
+    return  (widget._recipe != null) ? Stepper(
       physics: NeverScrollableScrollPhysics(),
       currentStep: widget._recipe.length - 1,
       controlsBuilder: (context, {onStepCancel, onStepContinue}) {
@@ -32,6 +31,9 @@ class _RecipeStepperState extends State<RecipeStepper> {
           content: Text(''),
         ) ;
       }).toList(),
+    ): Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text('No recipe', style: TextStyle( fontSize: 20),),
     );
   }
 }
