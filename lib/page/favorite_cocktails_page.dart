@@ -12,23 +12,22 @@ class FavoriteCocktailsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Favorite cocktails'.toUpperCase(),
-          style: Theme.of(context).primaryTextTheme.headline6.copyWith(color: kShrinePink100),
+        title: Text(
+          'Favorite cocktails'.toUpperCase(),
+          style: Theme.of(context)
+              .primaryTextTheme
+              .headline6
+              .copyWith(color: kShrinePink100),
           softWrap: false,
           overflow: TextOverflow.ellipsis,
         ),
         backgroundColor: Theme.of(context).accentColor,
         foregroundColor: kShrinePink100,
-        backwardsCompatibility:  false,
+        backwardsCompatibility: false,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded( child: CocktailsList(favoriteNotifier.cocktails),
-            ),
-          ],
-        ),
-      ),
+      body: favoriteNotifier.cocktails.isNotEmpty
+          ? SafeArea(child: CocktailsList(favoriteNotifier.cocktails))
+          : Center(child: Text('Sorry, favorite list is empty.')),
     );
   }
 }

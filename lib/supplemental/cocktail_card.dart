@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplebar/page/cocktail_page.dart';
 import 'package:simplebar/provider/favorite_cocktails_notifier.dart';
 import '../model/cocktail.dart';
 
@@ -60,7 +61,9 @@ class _CocktailCardState extends State<CocktailCard> {
               image: NetworkImage(widget.cocktail.imageSource),
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CocktailPage(widget.cocktail)));
+          },
         ),
       ),
     );

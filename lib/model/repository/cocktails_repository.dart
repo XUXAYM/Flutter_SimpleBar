@@ -13,6 +13,11 @@ class CocktailsRepository {
         id: 0,
         title: 'Black Russian',
         imageSource: 'https://i.ibb.co/JmBMN9H/black-russian.jpg',
+        recipe: [
+          'Fill the rocks with ice cubes to the top',
+          'Pour coffee liqueur 20 ml, vodka 50 ml',
+          'Stir with a cocktail spoon'
+        ],
         tools: tools,
         ingredients: [
           IngredientsRepository.getById(0),

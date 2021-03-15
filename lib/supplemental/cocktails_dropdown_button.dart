@@ -7,10 +7,10 @@ import '../colors.dart';
 
 class CocktailGroupDropdownButton extends StatefulWidget {
   @override
-  _CocktailGroupDropdownButton createState() => _CocktailGroupDropdownButton();
+  _CocktailGroupDropdownButtonState createState() => _CocktailGroupDropdownButtonState();
 }
 
-class _CocktailGroupDropdownButton extends State<CocktailGroupDropdownButton> {
+class _CocktailGroupDropdownButtonState extends State<CocktailGroupDropdownButton> {
   @override
   Widget build(BuildContext context) {
     final _notifier = Provider.of<CocktailsPoolNotifier>(context);
