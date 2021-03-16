@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:simplebar/model/repository/cocktails_repository.dart';
+
+import '../model/repository/cocktails_repository.dart';
 import '../model/cocktail.dart';
 
 class CocktailsPoolNotifier with ChangeNotifier {

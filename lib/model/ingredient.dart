@@ -1,12 +1,14 @@
 import 'package:meta/meta.dart';
 
 enum IngredientMeasure {ml, cl, l, gr, dash, drop, pinch, tbsp, tsp, pcs, sugarcube, oz }
+enum IngredientGroup {all, hard_spirit, vermouth, liqueur, bitter, wine, bear, syrup,  juice, puree, jam, fruit, berry, vegetable, herb, dairy, sauce, oil, spice, ice, garnish, other}
 
 class Ingredient {
   final int id;
   final String title;
   double _volume;
   final String description;
+  final IngredientGroup group;
   final int degree;
   final IngredientMeasure measure;
   final String imageSource;
@@ -16,6 +18,7 @@ class Ingredient {
     @required this.title,
     @required volume,
     this.description = '',
+    this.group = IngredientGroup.other,
     this.degree = 0,
     this.measure = IngredientMeasure.ml,
     this.imageSource = '',
