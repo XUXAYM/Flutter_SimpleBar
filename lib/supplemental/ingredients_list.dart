@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/ingredient.dart';
+import 'ingredient_tile.dart';
 
 class IngredientsList extends StatefulWidget {
   IngredientsList(this.ingredients);
@@ -18,22 +19,8 @@ class _IngredientsListState extends State<IngredientsList> {
       itemCount: widget.ingredients.length,
       itemBuilder: (context, index) {
         Ingredient ingredient = widget.ingredients[index];
-        return ListTile(
-          leading: ExcludeSemantics(
-            child: CircleAvatar(
-              backgroundColor: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(2.0),
-                child: Image.network(
-                  ingredient.imageSource,
-                ),
-              ),
-              radius: 30,
-            ),
-          ),
-          title: Text(ingredient.title),
-          subtitle: Text("Degree: " + ingredient.degree.toString()),
-        );
+        return IngredientListTile(ingredient,
+            subtitle: "Degree: " + ingredient.degree.toString());
       },
     );
   }

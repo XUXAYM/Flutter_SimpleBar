@@ -16,18 +16,25 @@ class CocktailsListPage extends StatelessWidget with PageWithTitle {
     var cocktailsNotifier = context.watch<CocktailsPoolNotifier>();
 
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: cocktailsNotifier.loadCocktails(cocktailsNotifier.group).isNotEmpty ? SafeArea(
-          child: CocktailsList(
-            cocktailsNotifier.loadCocktails(cocktailsNotifier.group),
-          ),
-        ) : Center( child: Text('Sorry, but list is empty.'),),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.local_bar_rounded),
-          onPressed: () => Navigator.pushNamed(context, '/favorite'),
-          backgroundColor: Theme.of(context).accentColor,
-          tooltip: 'Favorite cocktails',
-        ),
+      backgroundColor: Colors.transparent,
+      body: cocktailsNotifier.loadCocktails(cocktailsNotifier.group).isNotEmpty
+          ? SafeArea(
+              child: CocktailsList(
+                cocktailsNotifier.loadCocktails(cocktailsNotifier.group),
+              ),
+            )
+          : Center(
+              child: Text('Sorry, but list is empty.'),
+            ),
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        child: Icon(Icons.local_bar_rounded),
+        onPressed: () => Navigator.pushNamed(context, '/favorite'),
+        backgroundColor: Theme.of(context).accentColor,
+        tooltip: 'Favorite cocktails',
+      ),
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniCenterFloat,
     );
   }
 }

@@ -7,7 +7,6 @@ class Tool {
   final String title;
   final String description;
   final ToolType type;
-  int quantity;
   final String imageSource;
 
   Tool({
@@ -15,7 +14,6 @@ class Tool {
     @required this.title,
     this.description = '',
     this.type = ToolType.other,
-    this.quantity = 1,
     this.imageSource = '',
   }) : assert(id >= 0 && title.isNotEmpty && type != ToolType.all);
 

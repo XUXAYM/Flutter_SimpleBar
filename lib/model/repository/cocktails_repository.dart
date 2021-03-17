@@ -18,39 +18,47 @@ class CocktailsRepository {
           'Pour coffee liqueur 20 ml, vodka 50 ml',
           'Stir with a cocktail spoon'
         ],
-        tools: tools,
-        ingredients: [
-          IngredientsRepository.getById(0),
-          IngredientsRepository.getById(1),
-        ],
+        tools: {
+          0:1,
+          1:1,
+          2:1,
+        },
+        ingredients: {
+          0: 50,
+          1: 20,
+        },
         group: CocktailGroup.short,
       ),
       Cocktail(
         id: 1,
         title: 'White Russian',
         imageSource: 'https://i.ibb.co/cbMpY0M/white-russian.jpg',
-        tools: tools,
-        ingredients: [
-          IngredientsRepository.getById(0),
-          IngredientsRepository.getById(1),
-          IngredientsRepository.getById(2),
-        ],
+        tools: {
+          0:1,
+          1:1,
+          2:1,
+        },
+        ingredients: {
+          0: 50,
+          1: 20,
+          2: 20,
+        },
         group: CocktailGroup.short,
       ),
       Cocktail(
         id: 2,
         title: 'Cosmopolitan',
         imageSource: 'https://i.ibb.co/bbtZFJQ/cosmopolitan.jpg',
-        tools: [],
-        ingredients: [],
+        tools: {},
+        ingredients: {},
         group: CocktailGroup.long,
       ),
       Cocktail(
         id: 3,
         title: 'B-52',
         imageSource: 'https://i.ibb.co/KDPNZvH/b-52.jpg',
-        tools: [],
-        ingredients: [],
+        tools: {},
+        ingredients: {},
         group: CocktailGroup.shot,
       ),
     ];

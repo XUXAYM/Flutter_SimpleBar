@@ -16,11 +16,4 @@ class IngredientsPoolNotifier with ChangeNotifier {
 
   Ingredient getByPosition(int index) =>
       (index < _ingredient.length && index >= 0) ? _ingredient[index] : null;
-
-// List<Ingredient> loadCocktails(CocktailGroup group) => group == CocktailGroup.all ?
-// _ingredient : _ingredient.where((Ingredient c) => c.group == group).toList();
-
-//CocktailGroup _group = CocktailGroup.all;
-
-//CocktailGroup get group => _group;
 }

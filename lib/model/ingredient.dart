@@ -6,7 +6,6 @@ enum IngredientGroup {all, hard_spirit, vermouth, liqueur, bitter, wine, bear, s
 class Ingredient {
   final int id;
   final String title;
-  double _volume;
   final String description;
   final IngredientGroup group;
   final int degree;
@@ -16,21 +15,15 @@ class Ingredient {
   Ingredient({
     @required this.id,
     @required this.title,
-    @required volume,
     this.description = '',
     this.group = IngredientGroup.other,
     this.degree = 0,
     this.measure = IngredientMeasure.ml,
     this.imageSource = '',
-  }) : assert(id >= 0 && title.isNotEmpty && volume > 0.0)
-  {
-    setQuantity(volume);
-  }
+  }) : assert(id >= 0 && title.isNotEmpty);
 
-  void setQuantity(double value) => _volume = value;
-  double getQuantity() => _volume;
-  double getQuantityInMl() => _volume * _measuresToMl[measure];
-  double getQuantityInOz() => (_volume * _measuresToMl[measure]) / _measuresToMl[IngredientMeasure.oz];
+  double getQuantityInMl(double volume) => volume * _measuresToMl[measure];
+  double getQuantityInOz(double volume) => (volume * _measuresToMl[measure]) / _measuresToMl[IngredientMeasure.oz];
 
   @override
   String toString() => "$title (id=$id)";

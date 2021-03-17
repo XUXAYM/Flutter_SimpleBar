@@ -4,14 +4,13 @@ import '../model/cocktail.dart';
 import 'cocktails_notifier.dart';
 
 class FavoriteCocktailsNotifier extends ChangeNotifier {
-  /// The private field backing [catalog].
-  //late
+  /// The private field backing [cocktailsList].
   CocktailsPoolNotifier _cocktailsPool;
 
-  /// Internal, private state of the cart. Stores the ids of each item.
+  /// Internal, private state of the favorite cocktails. Stores the ids of each item.
   final List<int> _cocktailIds = [];
 
-  /// The current catalog. Used to construct items from numeric ids.
+  /// The current cocktails list. Used to construct items from numeric ids.
   CocktailsPoolNotifier get cocktailsPool => _cocktailsPool;
 
   set cocktailsPool(CocktailsPoolNotifier newCocktailsPool) {
@@ -22,19 +21,17 @@ class FavoriteCocktailsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// List of items in the cart.
+  /// List of items in the favorite cocktails list.
   List<Cocktail> get cocktails => _cocktailIds.map((id) => _cocktailsPool.getById(id)).toList();
 
-  /// The current total price of all items.
-
-  /// Adds [item] to cart. This is the only way to modify the cart from outside.
+  /// Adds [Cocktail] to favorite cocktails.
   void add(Cocktail cocktail) {
     _cocktailIds.add(cocktail.id);
     // This line tells [Model] that it should rebuild the widgets that
     // depend on it.
     notifyListeners();
   }
-
+  /// Removes [Cocktail] from favorite cocktails.
   void remove(Cocktail cocktail) {
     _cocktailIds.remove(cocktail.id);
     // Don't forget to tell dependent widgets to rebuild _every time_

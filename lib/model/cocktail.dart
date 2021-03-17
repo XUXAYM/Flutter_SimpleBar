@@ -1,6 +1,4 @@
 import 'package:meta/meta.dart';
-import 'ingredient.dart';
-import 'tool.dart';
 
 enum CocktailGroup { all, long, short, shot, hot, other }
 
@@ -10,11 +8,11 @@ class Cocktail {
   final String description;
   final List<String> recipe;
   final CocktailGroup group;
-  Ingredient basis;
+  int basis;
   int degree;
   int volume;
-  final List<Ingredient> ingredients;
-  final List<Tool> tools;
+  final Map<int, int> ingredients;
+  final Map<int, int> tools;
   final String imageSource;
 
   Cocktail({

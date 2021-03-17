@@ -61,30 +61,30 @@ class _IngredientListPageState extends State<IngredientListPage>
     final tabs = IngredientGroup.values.skip(1).toList();
 
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: TabBar(
-          indicatorColor: Theme
-              .of(context)
-              .accentColor,
-          controller: _tabController,
-          isScrollable: true,
-          tabs: [
-            for (final tab in tabs) Tab(
-                text: tab.toString().replaceAll('IngredientGroup.', '')
+      backgroundColor: Colors.transparent,
+      appBar: TabBar(
+        indicatorColor: Theme.of(context).accentColor,
+        controller: _tabController,
+        isScrollable: true,
+        tabs: [
+          for (final tab in tabs)
+            Tab(
+                text: tab
+                    .toString()
+                    .replaceAll('IngredientGroup.', '')
                     .replaceAll('_', ' ')
                     .toUpperCase()),
-          ],
-        ),
-        body: TabBarView(
-            controller: _tabController,
-            children: [
-            for (final tab in tabs)
-        ingredientsNotifier.loadIngredients(tab).length > 0
-        ? IngredientsList(ingredientsNotifier.loadIngredients(tab))
-        : Center(child: Text('There is nothing here now'))],
-    )
-    ,
+        ],
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          for (final tab in tabs)
+            ingredientsNotifier.loadIngredients(tab).length > 0
+                ? IngredientsList(ingredientsNotifier.loadIngredients(tab))
+                : Center(child: Text('There is nothing here now'))
+        ],
+      ),
     );
   }
 }
-

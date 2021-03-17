@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class RecipeStepper extends StatefulWidget {
   RecipeStepper(this._recipe);
-  List<String> _recipe;
+  final List<String> _recipe;
 
   @override
   _RecipeStepperState createState() => _RecipeStepperState();
