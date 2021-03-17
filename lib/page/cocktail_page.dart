@@ -19,7 +19,7 @@ class CocktailPage extends StatefulWidget with PageWithTitle {
 
 class _CocktailPageState extends State<CocktailPage> {
   bool _isRecipeExpanded = false;
-  bool _isIngredietsExpanded = false;
+  bool _isIngredientsExpanded = false;
   bool _isToolsExpanded = false;
 
   @override
@@ -109,7 +109,7 @@ class _CocktailPageState extends State<CocktailPage> {
                           )
                       ],
                     ),
-                    isExpanded: _isIngredietsExpanded,
+                    isExpanded: _isIngredientsExpanded,
                   ),
                 ],
                 expansionCallback: (int index, bool isExpanded) {
@@ -119,7 +119,7 @@ class _CocktailPageState extends State<CocktailPage> {
                         _isRecipeExpanded = !_isRecipeExpanded;
                         break;
                       case 1:
-                        _isIngredietsExpanded = !_isIngredietsExpanded;
+                        _isIngredientsExpanded = !_isIngredientsExpanded;
                         break;
                       case 2:
                         _isToolsExpanded = !_isToolsExpanded;
