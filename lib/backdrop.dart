@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 import 'colors.dart';
+import 'page/home.dart';
 import 'supplemental/cocktails_dropdown_button.dart';
 
 const double _kFlingVelocity = 2.0;
@@ -233,10 +234,11 @@ class _FrontLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 5.0,
+      elevation: 8.0,
       shape: BeveledRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(46.0)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(48.0)),
       ),
+      clipBehavior: Clip.hardEdge,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -260,7 +262,7 @@ class _FrontLayer extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: CocktailGroupDropdownButton(),
+                child: (this.child is CocktailsListPage) ? CocktailGroupDropdownButton() : null,
               ),
             ],
             alignment: AlignmentDirectional.centerEnd,
