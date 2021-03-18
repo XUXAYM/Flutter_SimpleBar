@@ -1,13 +1,12 @@
-import '../tool.dart';
 import '../cocktail.dart';
 import 'ingredients_repository.dart';
 import 'tools_repository.dart';
 
 class CocktailsRepository {
   final ingredients = IngredientsRepository.loadIngredients();
-  final tools = ToolsRepository.loadTools(ToolType.all);
+  final tools = ToolsRepository.loadTools();
 
-  List<Cocktail> loadCocktails(CocktailGroup group) {
+  List<Cocktail> loadCocktails() {
     var allCocktails = <Cocktail> [
       Cocktail(
         id: 0,
@@ -62,12 +61,6 @@ class CocktailsRepository {
         group: CocktailGroup.shot,
       ),
     ];
-    if (group == CocktailGroup.all) {
-      return allCocktails;
-    } else {
-      return allCocktails.where((Cocktail c) {
-        return c.group == group;
-      }).toList();
-    }
+    return allCocktails;
   }
 }

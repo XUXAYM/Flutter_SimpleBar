@@ -35,7 +35,6 @@ class _IngredientListTileState extends State<IngredientListTile> {
         icon: Icon(Icons.add, color: Theme.of(context).accentColor,),
         onPressed: ()
         {
-
         },
       ),
     );

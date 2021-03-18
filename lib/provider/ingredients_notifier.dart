@@ -4,16 +4,16 @@ import '../model/ingredient.dart';
 import '../model/repository/ingredients_repository.dart';
 
 class IngredientsPoolNotifier with ChangeNotifier {
-  final List<Ingredient> _ingredient = IngredientsRepository.loadIngredients();
+  final List<Ingredient> _ingredients = IngredientsRepository.loadIngredients();
 
   List<Ingredient> loadIngredients(IngredientGroup group) =>
       group == IngredientGroup.all
-          ? _ingredient
-          : _ingredient.where((Ingredient i) => i.group == group).toList();
+          ? _ingredients
+          : _ingredients.where((Ingredient i) => i.group == group).toList();
 
   Ingredient getById(int id) =>
-      _ingredient.firstWhere((c) => c.id == id, orElse: () => null);
+      _ingredients.firstWhere((i) => i.id == id, orElse: () => null);
 
   Ingredient getByPosition(int index) =>
-      (index < _ingredient.length && index >= 0) ? _ingredient[index] : null;
+      (index < _ingredients.length && index >= 0) ? _ingredients[index] : null;
 }

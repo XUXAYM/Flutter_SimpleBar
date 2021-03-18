@@ -27,23 +27,10 @@ class Cocktail {
   }) : assert(id >= 0 &&
             title.isNotEmpty &&
             ingredients != null &&
-            tools != null);
-  // {
-  //   if (ingredients.length > 0) {
-  //     this.volume = ingredients
-  //         .map<double>((i) => i.getQuantityInMl())
-  //         .fold<double>(0, (previousValue, element) => previousValue + element)
-  //         .round();
-  //     // this.basis = ingredients
-  //     //     .where((element) => element.degree > 0)
-  //     //     .fold<Ingredient>(
-  //     //         ingredients.first,
-  //     //         (previousValue, element) =>
-  //     //             previousValue.getQuantityInMl() >= element.getQuantityInMl()
-  //     //                 ? previousValue
-  //     //                 : element);
-  //   }
-  // }
+            tools != null)
+  {
+    volume = ingredients.length > 0 ? ingredients.values.fold(0, (sum, volume) => sum += volume) : 0;
+  }
 
   @override
   String toString() => "$title (id=$id)";

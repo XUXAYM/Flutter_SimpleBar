@@ -5,7 +5,7 @@ import '../model/cocktail.dart';
 
 class CocktailsPoolNotifier with ChangeNotifier {
   final List<Cocktail> _cocktails =
-      CocktailsRepository().loadCocktails(CocktailGroup.all);
+      CocktailsRepository().loadCocktails();
 
   Cocktail getById(int id) =>
       _cocktails.firstWhere((c) => c.id == id, orElse: () => null);

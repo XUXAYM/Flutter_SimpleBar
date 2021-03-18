@@ -40,8 +40,4 @@ class IngredientsRepository {
     ];
     return allIngredients.toList();
   }
-
-
-  static getById(int id) =>
-      loadIngredients().singleWhere((ingredient) => ingredient.id == id);
 }

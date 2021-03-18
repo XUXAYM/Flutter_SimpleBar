@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../model/cocktail.dart';
 import '../model/repository/cocktails_repository.dart';
 import '../page/cocktail_page.dart';
 import '../page/home.dart';
@@ -12,7 +11,7 @@ class PagesPoolNotifier with ChangeNotifier{
   List<Widget> _pages = [
     CocktailsListPage( title: 'Cocktails'),
     IngredientListPage( title: 'Ingredients'),
-    CocktailPage(CocktailsRepository().loadCocktails(CocktailGroup.all)[0]),
+    CocktailPage(CocktailsRepository().loadCocktails()[0]),
   ];
 
   Widget _currentPage;
