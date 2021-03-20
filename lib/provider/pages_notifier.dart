@@ -1,28 +1,49 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../model/repository/cocktails_repository.dart';
-import '../page/cocktail_page.dart';
 import '../page/home.dart';
+import '../page/my_bar_page.dart';
+import '../page/category_menu_page.dart';
+import '../page/cocktails_filter_page.dart';
 import '../page/ingredients_list_page.dart';
 
+
 class PagesPoolNotifier with ChangeNotifier{
-  PagesPoolNotifier() {_currentPage = _pages.first;}
-  List<Widget> _pages = [
+  PagesPoolNotifier()
+  {
+    _currentFrontPage = _frontPages.first;
+    _currentBackdropPage = _backPages.first;
+  }
+  List<Widget> _frontPages = [
     CocktailsListPage( title: 'Cocktails'),
     IngredientListPage( title: 'Ingredients'),
-    CocktailPage(CocktailsRepository().loadCocktails()[0]),
+    TransitionsHomePage(title: 'Animation test',),
   ];
 
-  Widget _currentPage;
+  List<Widget> _backPages = [
+    CategoryMenuPage(),
+    CocktailsFilterPage(),
+  ];
 
-  List<Widget> get pages => _pages;
+  Widget _currentFrontPage;
+  Widget _currentBackdropPage;
 
-  Widget get currentPage => _currentPage;
-  set currentPage(Widget value){
-    if(_currentPage != value){
-      _currentPage = value;
+  List<Widget> get frontPages => _frontPages;
+  List<Widget> get backPages => _backPages;
+
+  Widget get currentFrontPage => _currentFrontPage;
+  set currentFrontPage(Widget value){
+    if(_currentFrontPage != value){
+      _currentFrontPage = value;
     }
     notifyListeners();
+  }
+
+  Widget get currentBackdropPage => _currentBackdropPage;
+  set currentBackdropPage(Widget value){
+    if(_currentBackdropPage != value){
+      _currentBackdropPage = value;
+      notifyListeners();
+    }
   }
 }

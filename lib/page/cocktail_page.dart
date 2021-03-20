@@ -161,8 +161,9 @@ class _CocktailPageState extends State<CocktailPage> {
                                   child: Column(children: [
                                     for (int id in widget._cocktail.tools.keys)
                                       ToolListTile(
-                                          toolsProvider.getById(id),
-                                          quantity: widget._cocktail.tools[id],)
+                                        toolsProvider.getById(id),
+                                        quantity: widget._cocktail.tools[id],
+                                      )
                                   ]),
                                 )
                               : Padding(
@@ -206,7 +207,9 @@ class _CocktailPageState extends State<CocktailPage> {
 }
 
 class ToolListTile extends StatelessWidget {
-  ToolListTile(this.tool, {this.quantity: 1}) : assert(tool != null), assert(quantity != null && quantity > 0);
+  ToolListTile(this.tool, {this.quantity: 1})
+      : assert(tool != null),
+        assert(quantity != null && quantity > 0);
 
   final int quantity;
   final Tool tool;
@@ -227,7 +230,7 @@ class ToolListTile extends StatelessWidget {
         ),
       ),
       title: Text(tool.title),
-      subtitle: Text(quantity.toString()+' pcs'),
+      subtitle: Text(quantity.toString() + ' pcs'),
     );
   }
 }

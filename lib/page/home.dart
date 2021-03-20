@@ -35,6 +35,7 @@ class CocktailsListPage extends StatelessWidget with PageWithTitle {
       ),
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterFloat,
+      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 }

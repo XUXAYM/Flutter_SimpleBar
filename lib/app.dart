@@ -5,7 +5,7 @@ import 'page/favorite_cocktails_page.dart';
 import 'provider/pages_notifier.dart';
 import 'backdrop.dart';
 import 'colors.dart';
-import 'category_menu_page.dart';
+import 'page/category_menu_page.dart';
 
 class SimpleBarApp extends StatefulWidget {
   @override
@@ -19,9 +19,9 @@ class _SimpleBarAppState extends State<SimpleBarApp> {
     return MaterialApp(
       title: 'SimpleBar',
       home: Backdrop(
-        currentPage: Provider.of<PagesPoolNotifier>(context).currentPage,
-        frontLayer: Provider.of<PagesPoolNotifier>(context).currentPage,
-        backLayer: CategoryMenuPage(),
+        currentPage: Provider.of<PagesPoolNotifier>(context).currentFrontPage,
+        frontLayer: Provider.of<PagesPoolNotifier>(context).currentFrontPage,
+        backLayer: Provider.of<PagesPoolNotifier>(context).currentBackdropPage,
         frontTitle: Text('SIMPLE BAR'),
         backTitle: Text('MENU'),
       ),

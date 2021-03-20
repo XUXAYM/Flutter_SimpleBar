@@ -1,3 +1,11 @@
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:simplebar/page/page.dart';
+import 'package:simplebar/provider/pages_notifier.dart';
+
+import 'page/cocktails_filter_page.dart';
+import 'supplemental/flutter_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -32,6 +40,21 @@ class Backdrop extends StatefulWidget {
 
 class _BackdropState extends State<Backdrop>
     with SingleTickerProviderStateMixin {
+  _BackdropState() {
+    searchBar = new SearchBar(
+        closeOnSubmit: true,
+        inBar: true,
+        setState: setState,
+        buildDefaultAppBar: buildAppBar,
+        onSubmitted: (value) {},
+        onCleared: () {
+          print("cleared");
+        },
+        onClosed: () {
+          print("closed");
+        });
+  }
+
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _controller;
 
@@ -45,9 +68,10 @@ class _BackdropState extends State<Backdrop>
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    var appBar = AppBar(
+  SearchBar searchBar;
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
@@ -68,30 +92,20 @@ class _BackdropState extends State<Backdrop>
         backTitle: widget.backTitle,
       ),
       actions: <Widget>[
-        // TODO: Add shortcut to login screen from trailing icons (104)
+        searchBar.getSearchAction(context),
         IconButton(
-          icon: Icon(
-            Icons.search,
-            semanticLabel: 'login', // New code
-          ),
-          onPressed: () {},
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.login,
-            semanticLabel: 'login', // New code
-          ),
+          icon: Icon(Icons.tune),
           onPressed: () {
-            /*Navigator.push(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => SignInDemo()),
-            );*/
           },
         ),
       ],
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar,
+      appBar: searchBar.build(context),
       body: LayoutBuilder(builder: _buildStack),
     );
   }
@@ -108,21 +122,21 @@ class _BackdropState extends State<Backdrop>
   }
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
-    //const double layerTitleHeight = 48.0;
-    const double layerTitleWidth = 48.0;
+    const double layerTitleHeight = 48.0;
+    //const double layerTitleWidth = 48.0;
     //final Size layerSize = constraints.biggest;
 
     final panelSize = constraints.biggest;
-    // final closedPercentage = _frontLayerVisible
-    //     ? (panelSize.height - layerTitleWidth) / panelSize.height
-    //     : 1.0;
     final closedPercentage = _frontLayerVisible
-        ? (panelSize.width - layerTitleWidth) / panelSize.width
+        ? (panelSize.height - layerTitleHeight) / panelSize.height
         : 1.0;
-    final openPercentage =  0.0 / panelSize.width;
+    // final closedPercentage = _frontLayerVisible
+    //     ? (panelSize.width - layerTitleWidth) / panelSize.width
+    //     : 1.0;
+    final openPercentage = 0.0 / panelSize.height;
     final panelDetailsPosition = Tween<Offset>(
-      begin: Offset( closedPercentage,0.0),
-      end: Offset( openPercentage, 0.0),
+      begin: Offset(0.0, closedPercentage),
+      end: Offset(0.0, openPercentage),
     ).animate(_controller.view);
 
     return Stack(
@@ -161,6 +175,7 @@ class _BackdropState extends State<Backdrop>
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////// The end of Backdrop Class
 class _BackdropTitle extends AnimatedWidget {
   final Function onPress;
   final Widget frontTitle;
@@ -221,7 +236,6 @@ class _BackdropTitle extends AnimatedWidget {
 }
 
 class _FrontLayer extends StatelessWidget {
-  // TODO: Add on-tap callback (104)
   const _FrontLayer({
     Key key,
     this.onTap,
@@ -235,10 +249,10 @@ class _FrontLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 8.0,
-      shape: BeveledRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(48.0)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
       ),
-      clipBehavior: Clip.hardEdge,
+      clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -248,21 +262,43 @@ class _FrontLayer extends StatelessWidget {
                 behavior: HitTestBehavior.opaque,
                 onTap: onTap,
                 child: Material(
-                  shape: BeveledRectangleBorder(
+                  shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(27.0)),
+                        BorderRadius.vertical(top: Radius.circular(15)),
                   ),
                   elevation: 5,
-                  child: Container(
-                    height: 47.0,
-                    alignment: AlignmentDirectional.centerStart,
-                    color: Colors.transparent,
+                  child: DefaultTextStyle(
+                    style: Theme.of(context)
+                        .primaryTextTheme
+                        .headline6
+                        .copyWith(fontSize: 16),
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    child: Stack(
+                      alignment: Alignment.centerLeft,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 16.0),
+                          child: child is PageWithTitle
+                              ? Text(
+                                  (child as PageWithTitle).title.toUpperCase())
+                              : null,
+                        ),
+                        Container(
+                          height: 47.0,
+                          alignment: AlignmentDirectional.centerStart,
+                          color: Colors.transparent,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: (this.child is CocktailsListPage) ? CocktailGroupDropdownButton() : null,
+                child: (this.child is CocktailsListPage)
+                    ? CocktailGroupDropdownButton()
+                    : null,
               ),
             ],
             alignment: AlignmentDirectional.centerEnd,
@@ -275,4 +311,3 @@ class _FrontLayer extends StatelessWidget {
     );
   }
 }
-
