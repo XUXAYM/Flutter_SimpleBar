@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/page/cocktail_page.dart';
-import 'package:simplebar/provider/favorite_cocktails_notifier.dart';
+
+import '../provider/favorite_cocktails_notifier.dart';
+import '../page/cocktail_page.dart';
 import '../model/cocktail.dart';
 
 class CocktailCard extends StatefulWidget {
-  CocktailCard(this.cocktail);
+  CocktailCard(this.cocktail) : super(key: ObjectKey(cocktail));
 
   final Cocktail cocktail;
 

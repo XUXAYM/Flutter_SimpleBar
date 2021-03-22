@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/cocktail.dart';
@@ -34,8 +35,6 @@ class FavoriteCocktailsNotifier extends ChangeNotifier {
   /// Removes [Cocktail] from favorite cocktails.
   void remove(Cocktail cocktail) {
     _cocktailIds.remove(cocktail.id);
-    // Don't forget to tell dependent widgets to rebuild _every time_
-    // you change the model.
     notifyListeners();
   }
 }

@@ -20,9 +20,11 @@ class PagesPoolNotifier with ChangeNotifier{
     TransitionsHomePage(title: 'Animation test',),
   ];
 
+  static GlobalKey _backPageKey =  GlobalKey();
+
   List<Widget> _backPages = [
-    CategoryMenuPage(),
-    CocktailsFilterPage(),
+    CategoryMenuPage(key: _backPageKey,),
+    CocktailsFilterPage(key: _backPageKey),
   ];
 
   Widget _currentFrontPage;

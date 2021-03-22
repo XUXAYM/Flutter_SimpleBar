@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import '../colors.dart';
 
 class CocktailsFilterPage extends StatefulWidget {
+  CocktailsFilterPage({Key key}) : super(key: key);
+
   @override
   _CocktailsFilterPageState createState() => _CocktailsFilterPageState();
 }
 
 class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -21,6 +24,9 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
               min: 0,
               max: 100,
               value: 0,
+              onChanged: (value) {
+                
+              },
               onChangeEnd: (value) {
 
               },
