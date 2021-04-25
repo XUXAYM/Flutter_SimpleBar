@@ -1,20 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../model/cocktail.dart';
 import '../provider/cocktails_notifier.dart';
-import '../colors.dart';
 
-class CocktailGroupDropdownButton extends StatefulWidget {
-  @override
-  _CocktailGroupDropdownButtonState createState() => _CocktailGroupDropdownButtonState();
-}
-
-class _CocktailGroupDropdownButtonState extends State<CocktailGroupDropdownButton> {
+class CocktailGroupDropdownButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _notifier = Provider.of<CocktailsPoolNotifier>(context);
     final ThemeData theme = Theme.of(context);
+
     return DropdownButton<CocktailGroup>(
       value: _notifier.group,
       onChanged: (CocktailGroup value) => _notifier.group = value,
@@ -32,7 +28,8 @@ class _CocktailGroupDropdownButtonState extends State<CocktailGroupDropdownButto
           .map<DropdownMenuItem<CocktailGroup>>((CocktailGroup value) {
         return DropdownMenuItem<CocktailGroup>(
           value: value,
-          child: Text(value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
+          child: Text(
+              value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
         );
       }).toList(),
     );

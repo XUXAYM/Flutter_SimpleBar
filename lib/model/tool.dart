@@ -1,6 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
-enum ToolType {all, glass, barman_tool, decoration, other}
+enum ToolType { all, glass, barman_tool, decoration, other }
 
 class Tool {
   final int id;
@@ -25,4 +26,21 @@ class Tool {
 
   @override
   bool operator ==(Object other) => other is Tool && other.id == id;
+
+  static Tool fromMap(Map mapTool) => Tool(
+        id: mapTool['id'],
+        title: mapTool['title'],
+        description: mapTool['description'],
+        imageSource: mapTool['imageSource'],
+        type: ToolType.values
+            .firstWhere((e) => describeEnum(e) == mapTool['type']),
+      );
+
+  static Map toMap(Tool tool) => {
+        'id': tool.id,
+        'title': tool.title,
+        'description': tool.description,
+        'imageSource': tool.imageSource,
+        'type': describeEnum(tool.type),
+      };
 }

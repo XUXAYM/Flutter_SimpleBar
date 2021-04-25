@@ -1,7 +1,44 @@
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
-enum IngredientMeasure {ml, cl, l, gr, dash, drop, pinch, tbsp, tsp, pcs, sugarcube, oz }
-enum IngredientGroup {all, hard_spirit, vermouth, liqueur, bitter, wine, bear, syrup,  juice, puree, jam, fruit, berry, vegetable, herb, dairy, sauce, oil, spice, ice, garnish, other}
+enum IngredientMeasure {
+  ml,
+  cl,
+  l,
+  gr,
+  dash,
+  drop,
+  pinch,
+  tbsp,
+  tsp,
+  pcs,
+  sugarcube,
+  oz
+}
+enum IngredientGroup {
+  all,
+  hard_spirit,
+  vermouth,
+  liqueur,
+  bitter,
+  wine,
+  bear,
+  syrup,
+  juice,
+  puree,
+  jam,
+  fruit,
+  berry,
+  vegetable,
+  herb,
+  dairy,
+  sauce,
+  oil,
+  spice,
+  ice,
+  garnish,
+  other
+}
 
 class Ingredient {
   final int id;
@@ -23,7 +60,9 @@ class Ingredient {
   }) : assert(id >= 0 && title.isNotEmpty);
 
   double getQuantityInMl(double volume) => volume * _measuresToMl[measure];
-  double getQuantityInOz(double volume) => (volume * _measuresToMl[measure]) / _measuresToMl[IngredientMeasure.oz];
+
+  double getQuantityInOz(double volume) =>
+      (volume * _measuresToMl[measure]) / _measuresToMl[IngredientMeasure.oz];
 
   @override
   String toString() => "$title (id=$id)";
@@ -33,6 +72,28 @@ class Ingredient {
 
   @override
   bool operator ==(Object other) => other is Ingredient && other.id == id;
+
+  static Ingredient fromMap(Map mapIngredient) => Ingredient(
+    id: mapIngredient['id'],
+    title: mapIngredient['title'],
+    description: mapIngredient['description'],
+    imageSource: mapIngredient['imageSource'],
+    degree: mapIngredient['degree'],
+    group: IngredientGroup.values
+        .firstWhere((e) => describeEnum(e) == mapIngredient['group']),
+    measure: IngredientMeasure.values
+        .firstWhere((e) => describeEnum(e) == mapIngredient['measure']),
+  );
+
+  static Map toMap(Ingredient ingredient) => {
+    'id': ingredient.id,
+    'title': ingredient.title,
+    'description': ingredient.description,
+    'imageSource': ingredient.imageSource,
+    'degree': ingredient.degree,
+    'group': describeEnum(ingredient.group),
+    'measure': describeEnum(ingredient.measure),
+  };
 
   static const Map<IngredientMeasure, double> _measuresToMl = {
     IngredientMeasure.cl: 10,

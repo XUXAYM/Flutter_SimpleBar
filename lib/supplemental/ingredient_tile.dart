@@ -7,6 +7,7 @@ class IngredientListTile extends StatefulWidget {
 
   final Ingredient ingredient;
   final String subtitle;
+
   @override
   _IngredientListTileState createState() => _IngredientListTileState();
 }

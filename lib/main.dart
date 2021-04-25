@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplebar/provider/settings_notifier.dart';
 import 'package:simplebar/provider/tools_notifier.dart';
 
 import 'app.dart';
@@ -14,6 +15,7 @@ void main() => runApp(
         ChangeNotifierProvider(create: (_) => IngredientsPoolNotifier()),
         ChangeNotifierProvider(create: (_) => CocktailsPoolNotifier()),
         ChangeNotifierProvider(create: (_) => PagesPoolNotifier()),
+        ChangeNotifierProvider(create: (_) => SettingsNotifier()),
         ChangeNotifierProxyProvider<CocktailsPoolNotifier, FavoriteCocktailsNotifier>(
           create: (context) => FavoriteCocktailsNotifier(),
           update: (context, cocktailsPool, favorite) {

@@ -61,7 +61,9 @@ class _IngredientListPageState extends State<IngredientListPage>
     final tabs = IngredientGroup.values.skip(1).toList();
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      //backgroundColor: Colors.transparent,
+      //backgroundColor: Theme.of(context).appBarTheme.,
+      backgroundColor: Color(0xfffafafa),
       appBar: TabBar(
         indicatorColor: Theme.of(context).accentColor,
         controller: _tabController,

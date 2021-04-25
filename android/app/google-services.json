@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "212976112067",
+    "project_id": "simplebar",
+    "storage_bucket": "simplebar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212976112067:android:be30d18b4948d36babed76",
+        "android_client_info": {
+          "package_name": "com.simpleapps.simplebar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212976112067-svib71510mck1i0jipufcnig94m8qqdh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simpleapps.simplebar",
+            "certificate_hash": "e77644757f489538887ac4e345f7645d449e3747"
+          }
+        },
+        {
+          "client_id": "212976112067-pkjbmelrnhpqt3eab146c5r213q19fdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyi11Cl_mr7H1FdKh6I7DPKu1IiRoCKbE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212976112067-pkjbmelrnhpqt3eab146c5r213q19fdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,6 +38,7 @@ class _CocktailPageState extends State<CocktailPage> {
         children: [
           Expanded(
             child: ListView(
+              reverse: true,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -107,7 +108,7 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.ingredients.keys.length > 0
                               ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                       0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id
@@ -128,7 +129,7 @@ class _CocktailPageState extends State<CocktailPage> {
                                   ]),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Text(
                                     'No ingredients',
                                     style: TextStyle(fontSize: 20),
@@ -156,17 +157,18 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.tools.keys.length > 0
                               ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                       0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id in widget._cocktail.tools.keys)
                                       ToolListTile(
-                                          toolsProvider.getById(id),
-                                          quantity: widget._cocktail.tools[id],)
+                                        toolsProvider.getById(id),
+                                        quantity: widget._cocktail.tools[id],
+                                      )
                                   ]),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Text(
                                     'No tools',
                                     style: TextStyle(fontSize: 20),
@@ -196,7 +198,7 @@ class _CocktailPageState extends State<CocktailPage> {
                 SizedBox(
                   height: 15,
                 ),
-              ],
+              ].reversed.toList(),
             ),
           ),
         ],
@@ -206,7 +208,9 @@ class _CocktailPageState extends State<CocktailPage> {
 }
 
 class ToolListTile extends StatelessWidget {
-  ToolListTile(this.tool, {this.quantity: 1}) : assert(tool != null), assert(quantity != null && quantity > 0);
+  ToolListTile(this.tool, {this.quantity: 1})
+      : assert(tool != null),
+        assert(quantity != null && quantity > 0);
 
   final int quantity;
   final Tool tool;
@@ -227,7 +231,7 @@ class ToolListTile extends StatelessWidget {
         ),
       ),
       title: Text(tool.title),
-      subtitle: Text(quantity.toString()+' pcs'),
+      subtitle: Text(quantity.toString() + ' pcs'),
     );
   }
 }
