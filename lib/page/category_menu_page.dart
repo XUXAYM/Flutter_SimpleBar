@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../provider/pages_notifier.dart';
-import '../colors.dart';
 import 'page.dart';
 
 class CategoryMenuPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class CategoryMenuPage extends StatelessWidget {
       child: Center(
         child: Container(
           padding: EdgeInsets.only(top: 40.0),
-          color: kShrinePink100,
+          color: Theme.of(context).appBarTheme.color,
           child: ListView(
               children: Provider.of<PagesPoolNotifier>(context, listen: false).frontPages
                   .map((Widget p) => _buildCategory(p, context))
@@ -51,9 +51,7 @@ class CategoryMenuPage extends StatelessWidget {
         padding: EdgeInsets.symmetric(vertical: 16.0),
         child: Text(
           groupString,
-          style: theme.textTheme.bodyText1.copyWith(
-              color: kShrineBrown900.withAlpha(153)
-          ),
+          style: theme.textTheme.bodyText1,
           textAlign: TextAlign.center,
         ),
       ),

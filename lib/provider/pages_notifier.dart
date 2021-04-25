@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../page/animation_test_page.dart';
+import '../page/settings_page.dart';
 import '../page/home.dart';
 import '../page/my_bar_page.dart';
 import '../page/category_menu_page.dart';
@@ -17,7 +19,9 @@ class PagesPoolNotifier with ChangeNotifier{
   List<Widget> _frontPages = [
     CocktailsListPage( title: 'Cocktails'),
     IngredientListPage( title: 'Ingredients'),
+    MyBarPage(title: 'My Bar',),
     TransitionsHomePage(title: 'Animation test',),
+    SettingsPage(title:'Settings',),
   ];
 
   static GlobalKey _backPageKey =  GlobalKey();

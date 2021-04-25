@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../colors.dart';
-
 class CocktailsFilterPage extends StatefulWidget {
   CocktailsFilterPage({Key key}) : super(key: key);
 
@@ -15,7 +13,7 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: kShrinePink100,
+        color: Theme.of(context).primaryColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -25,7 +23,7 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
               max: 100,
               value: 0,
               onChanged: (value) {
-                
+
               },
               onChangeEnd: (value) {
 

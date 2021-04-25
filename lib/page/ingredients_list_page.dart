@@ -63,6 +63,7 @@ class _IngredientListPageState extends State<IngredientListPage>
     return Scaffold(
       //backgroundColor: Colors.transparent,
       //backgroundColor: Theme.of(context).appBarTheme.,
+      backgroundColor: Color(0xfffafafa),
       appBar: TabBar(
         indicatorColor: Theme.of(context).accentColor,
         controller: _tabController,

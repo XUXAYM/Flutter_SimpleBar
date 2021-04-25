@@ -38,6 +38,7 @@ class _CocktailPageState extends State<CocktailPage> {
         children: [
           Expanded(
             child: ListView(
+              reverse: true,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -107,7 +108,7 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.ingredients.keys.length > 0
                               ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                       0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id
@@ -128,7 +129,7 @@ class _CocktailPageState extends State<CocktailPage> {
                                   ]),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Text(
                                     'No ingredients',
                                     style: TextStyle(fontSize: 20),
@@ -156,7 +157,7 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.tools.keys.length > 0
                               ? Padding(
-                                  padding: const EdgeInsets.fromLTRB(
+                                  padding: EdgeInsets.fromLTRB(
                                       0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id in widget._cocktail.tools.keys)
@@ -167,7 +168,7 @@ class _CocktailPageState extends State<CocktailPage> {
                                   ]),
                                 )
                               : Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Text(
                                     'No tools',
                                     style: TextStyle(fontSize: 20),
@@ -197,7 +198,7 @@ class _CocktailPageState extends State<CocktailPage> {
                 SizedBox(
                   height: 15,
                 ),
-              ],
+              ].reversed.toList(),
             ),
           ),
         ],

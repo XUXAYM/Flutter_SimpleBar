@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 enum CocktailGroup { all, long, short, shot, hot, other }
@@ -27,9 +28,10 @@ class Cocktail {
   }) : assert(id >= 0 &&
             title.isNotEmpty &&
             ingredients != null &&
-            tools != null)
-  {
-    volume = ingredients.length > 0 ? ingredients.values.fold(0, (sum, volume) => sum += volume) : 0;
+            tools != null) {
+    volume = ingredients.length > 0
+        ? ingredients.values.fold(0, (sum, volume) => sum += volume)
+        : 0;
   }
 
   @override
@@ -40,4 +42,27 @@ class Cocktail {
 
   @override
   bool operator ==(Object other) => other is Cocktail && other.id == id;
+
+  static Cocktail fromMap(Map mapCocktail) => Cocktail(
+        id: mapCocktail['id'],
+        title: mapCocktail['title'],
+        description: mapCocktail['description'],
+        imageSource: mapCocktail['imageSource'],
+        ingredients: mapCocktail['ingredients'],
+        tools: mapCocktail['tools'],
+        recipe: mapCocktail['recipe'],
+        group: CocktailGroup.values
+            .firstWhere((e) => describeEnum(e) == mapCocktail['type']),
+      );
+
+  static Map toMap(Cocktail cocktail) => {
+        'id': cocktail.id,
+        'title': cocktail.title,
+        'description': cocktail.description,
+        'imageSource': cocktail.imageSource,
+        'ingredients': cocktail.ingredients,
+        'tools': cocktail.tools,
+        'recipe': cocktail.recipe,
+        'group': describeEnum(cocktail.group),
+      };
 }

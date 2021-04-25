@@ -4,33 +4,28 @@ import 'package:provider/provider.dart';
 import '../provider/favorite_cocktails_notifier.dart';
 import '../page/cocktail_page.dart';
 import '../model/cocktail.dart';
+import '../constants.dart';
 
-class CocktailCard extends StatefulWidget {
+class CocktailCard extends StatelessWidget {
   CocktailCard(this.cocktail) : super(key: ObjectKey(cocktail));
 
   final Cocktail cocktail;
 
   @override
-  _CocktailCardState createState() => _CocktailCardState();
-}
-
-class _CocktailCardState extends State<CocktailCard> {
-  @override
   Widget build(BuildContext context) {
     bool isInFavorite = context.select<FavoriteCocktailsNotifier, bool>(
-      // Here, we are only interested whether [item] is inside the cart.
-      (favorite) => favorite.cocktails.contains(widget.cocktail),
+      (favorite) => favorite.cocktails.contains(cocktail),
     );
 
     return GridTile(
       footer: Material(
         color: Colors.transparent,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(27.0)),
+          borderRadius: BorderRadius.vertical(bottom: kBorderRadius),
         ),
         clipBehavior: Clip.antiAlias,
         child: GridTileBar(
-          title: _TitleText(widget.cocktail.title),
+          title: _TitleText(cocktail.title),
           trailing: IconButton(
               icon: isInFavorite
                   ? Icon(Icons.favorite_rounded)
@@ -39,31 +34,34 @@ class _CocktailCardState extends State<CocktailCard> {
               onPressed: isInFavorite
                   ? () {
                       var favorite = context.read<FavoriteCocktailsNotifier>();
-                      favorite.remove(widget.cocktail);
+                      favorite.remove(cocktail);
                     }
                   : () {
                       var favorite = context.read<FavoriteCocktailsNotifier>();
-                      favorite.add(widget.cocktail);
+                      favorite.add(cocktail);
                     }),
           backgroundColor: Colors.black45,
         ),
       ),
       child: Material(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(27.0)),
+          borderRadius: BorderRadius.all(kBorderRadius),
         ),
         elevation: 4,
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(top: 32.0, bottom: 64.0),
             child: Ink.image(
-              image: NetworkImage(widget.cocktail.imageSource),
+              image: NetworkImage(cocktail.imageSource),
             ),
           ),
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => CocktailPage(widget.cocktail)));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CocktailPage(cocktail)));
           },
         ),
       ),
@@ -72,7 +70,7 @@ class _CocktailCardState extends State<CocktailCard> {
 }
 
 class _TitleText extends StatelessWidget {
-  const _TitleText(this.text);
+  _TitleText(this.text);
 
   final String text;
 

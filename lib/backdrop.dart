@@ -1,18 +1,14 @@
 import 'package:flutter/scheduler.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
+import 'constants.dart';
 
 import 'provider/pages_notifier.dart';
 
-
-
-import 'colors.dart';
-import 'page/home.dart';
-import 'page/page.dart';
-import 'supplemental/cocktails_dropdown_button.dart';
 import 'supplemental/flutter_search_bar.dart';
+import 'supplemental/front_layer.dart';
 
 class Backdrop extends StatefulWidget {
   final Widget currentPage;
@@ -25,13 +21,10 @@ class Backdrop extends StatefulWidget {
     @required this.frontLayer,
     @required this.backLayer,
     @required this.frontTitle,
-    //@required this.backTitle,
   })  : assert(currentPage != null),
         assert(frontLayer != null),
         assert(backLayer != null),
         assert(frontTitle != null);
-
-  // assert(backTitle != null);
 
   @override
   _BackdropState createState() => _BackdropState();
@@ -78,7 +71,7 @@ class _BackdropState extends State<Backdrop>
     });
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 300),
       value: 0.0,
       vsync: this,
     );
@@ -93,38 +86,46 @@ class _BackdropState extends State<Backdrop>
   }
 
   AppBar buildAppBar(BuildContext context) {
+    List<Widget> actions;
+    switch (widget.frontLayer.runtimeType.toString()) {
+      case 'CocktailsListPage':
+        actions = [
+          searchBar.getSearchAction(context),
+          IconButton(
+            icon: Icon(Icons.tune),
+            onPressed: () {
+              if (Provider.of<PagesPoolNotifier>(context, listen: false)
+                      .currentBackdropPage ==
+                  Provider.of<PagesPoolNotifier>(context, listen: false)
+                      .backPages[1]) {
+                toggleButton();
+              } else {
+                backTitle = Text('FILTER');
+                Provider.of<PagesPoolNotifier>(context, listen: false)
+                        .currentBackdropPage =
+                    Provider.of<PagesPoolNotifier>(context, listen: false)
+                        .backPages[1];
+              }
+            },
+          ),
+        ];
+        break;
+      default:
+        actions = [];
+    }
+
     return AppBar(
       brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
-      // leading: IconButton(
-      //   icon: Icon(Icons.menu),
-      //   onPressed: () {},
-      // ),
       leading: IconButton(
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_close,
           color: kShrineBrown900,
-          progress: _controller.view,
+          progress: CurvedAnimation(
+              parent: _controller.view, curve: Interval(0.0, 0.5)),
         ),
-        onPressed: () {
-          if (Provider.of<PagesPoolNotifier>(context, listen: false)
-                  .currentBackdropPage ==
-              Provider.of<PagesPoolNotifier>(context, listen: false)
-                  .backPages[0]) {
-            toggleButton();
-          } else {
-            backTitle = Text('MENU');
-            if (isFrontVisible) {
-              Provider.of<PagesPoolNotifier>(context, listen: false)
-                      .currentBackdropPage =
-                  Provider.of<PagesPoolNotifier>(context, listen: false)
-                      .backPages[0];
-            } else {
-              toggleButton();
-            }
-          }
-        },
+        onPressed: _menuButtonToggle,
       ),
       title: _BackdropTitle(
         listenable: _controller.view,
@@ -132,27 +133,25 @@ class _BackdropState extends State<Backdrop>
         frontTitle: widget.frontTitle,
         backTitle: backTitle,
       ),
-      actions: <Widget>[
-        searchBar.getSearchAction(context),
-        IconButton(
-          icon: Icon(Icons.tune),
-          onPressed: () {
-            if (Provider.of<PagesPoolNotifier>(context, listen: false)
-                    .currentBackdropPage ==
-                Provider.of<PagesPoolNotifier>(context, listen: false)
-                    .backPages[1]) {
-              toggleButton();
-            } else {
-              backTitle = Text('FILTER');
-              Provider.of<PagesPoolNotifier>(context, listen: false)
-                      .currentBackdropPage =
-                  Provider.of<PagesPoolNotifier>(context, listen: false)
-                      .backPages[1];
-            }
-          },
-        ),
-      ],
+      actions: actions,
     );
+  }
+
+  _menuButtonToggle() {
+    if (Provider.of<PagesPoolNotifier>(context, listen: false)
+            .currentBackdropPage ==
+        Provider.of<PagesPoolNotifier>(context, listen: false).backPages[0]) {
+      toggleButton();
+    } else {
+      backTitle = Text('MENU');
+      if (isFrontVisible) {
+        Provider.of<PagesPoolNotifier>(context, listen: false)
+                .currentBackdropPage =
+            Provider.of<PagesPoolNotifier>(context, listen: false).backPages[0];
+      } else {
+        toggleButton();
+      }
+    }
   }
 
   @override
@@ -180,7 +179,8 @@ class _BackdropState extends State<Backdrop>
           });
           if (!isFrontVisible) {
             setAnimation(backPageSize.height, startValue: oldSize.height);
-            _controller.forward(from: 0.35);
+            //_controller.animateBack(0.35, curve: Interval(0.0, 0.35));
+            _controller.forward(from: 0.45);
           } else {
             toggleButton();
           }
@@ -192,30 +192,15 @@ class _BackdropState extends State<Backdrop>
   }
 
   void toggleButton() {
-    if(isFrontVisible){
+    if (isFrontVisible) {
       setAnimation(backPageSize.height);
-       isFrontVisible = false;
+      isFrontVisible = false;
       _controller.forward();
-    }else{
+    } else {
       setAnimation(backPageSize.height);
       isFrontVisible = true;
       _controller.reverse();
     }
-    // switch (_controller.status) {
-    //   case AnimationStatus.completed:
-    //     setAnimation(backPageSize.height);
-    //
-    //     break;
-    //   case AnimationStatus.forward:
-    //     setAnimation(backPageSize.height);
-    //     isFrontVisible = true;
-    //     _controller.reverse();
-    //     break;
-    //   default:
-    //     setAnimation(backPageSize.height);
-    //
-    //     break;
-    // }
   }
 
   void setAnimation(double endValue, {double startValue}) {
@@ -236,7 +221,7 @@ class _BackdropState extends State<Backdrop>
       children: <Widget>[
         ExcludeSemantics(
           child: Container(
-            color: kShrinePink100,
+            color: Theme.of(context).primaryColor,
             height: double.infinity,
             width: double.infinity,
           ),
@@ -244,23 +229,19 @@ class _BackdropState extends State<Backdrop>
         ),
         ExcludeSemantics(
           child: FadeTransition(
-            opacity: _controller.view,
+            opacity: CurvedAnimation(
+                parent: _controller.view, curve: Interval(0.4, 0.8)),
             child: Container(
               child: widget.backLayer,
               key: backKey,
             ),
           ),
-
-          //child: Container(
-          // child: widget.backLayer,
-          //  key: backKey,
-          //),
           excluding: isFrontVisible,
         ),
         Transform.translate(
           offset: Offset(0.0, animation.value),
-          child: _FrontLayer(
-            onTap: toggleButton,
+          child: FrontLayer(
+            onTap: _menuButtonToggle,
             child: widget.frontLayer,
           ),
         ),
@@ -268,8 +249,6 @@ class _BackdropState extends State<Backdrop>
     );
   }
 }
-
-//////////////////////////////////////////////////////////////////////////////// The end of Backdrop Class
 
 class _BackdropTitle extends AnimatedWidget {
   final Function onPress;
@@ -326,83 +305,6 @@ class _BackdropTitle extends AnimatedWidget {
           ],
         )
       ]),
-    );
-  }
-}
-
-class _FrontLayer extends StatelessWidget {
-  const _FrontLayer({
-    Key key,
-    this.onTap,
-    this.child,
-  }) : super(key: key);
-
-  final VoidCallback onTap;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 8.0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Stack(
-            children: [
-              GestureDetector(
-                behavior: HitTestBehavior.opaque,
-                onTap: onTap,
-                child: Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(15)),
-                  ),
-                  elevation: 5,
-                  child: DefaultTextStyle(
-                    style: Theme.of(context)
-                        .primaryTextTheme
-                        .headline6
-                        .copyWith(fontSize: 16),
-                    softWrap: false,
-                    overflow: TextOverflow.ellipsis,
-                    child: Stack(
-                      alignment: Alignment.centerLeft,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: child is PageWithTitle
-                              ? Text(
-                                  (child as PageWithTitle).title.toUpperCase())
-                              : null,
-                        ),
-                        Container(
-                          height: 47.0,
-                          alignment: AlignmentDirectional.centerStart,
-                          color: Colors.transparent,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: (this.child is CocktailsListPage)
-                    ? CocktailGroupDropdownButton()
-                    : null,
-              ),
-            ],
-            alignment: AlignmentDirectional.centerEnd,
-          ),
-          Expanded(
-            child: child,
-          ),
-        ],
-      ),
     );
   }
 }
