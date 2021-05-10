@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:meta/meta.dart';
 
-import 'constants.dart';
-
 import 'provider/pages_notifier.dart';
 
 import 'supplemental/flutter_search_bar.dart';
@@ -115,13 +113,11 @@ class _BackdropState extends State<Backdrop>
     }
 
     return AppBar(
-      brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
       leading: IconButton(
         icon: AnimatedIcon(
           icon: AnimatedIcons.menu_close,
-          color: kShrineBrown900,
           progress: CurvedAnimation(
               parent: _controller.view, curve: Interval(0.0, 0.5)),
         ),

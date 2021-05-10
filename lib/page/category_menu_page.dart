@@ -14,7 +14,6 @@ class CategoryMenuPage extends StatelessWidget {
       child: Center(
         child: Container(
           padding: EdgeInsets.only(top: 40.0),
-          color: Theme.of(context).appBarTheme.color,
           child: ListView(
               children: Provider.of<PagesPoolNotifier>(context, listen: false).frontPages
                   .map((Widget p) => _buildCategory(p, context))

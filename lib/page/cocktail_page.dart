@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../model/tool.dart';
-import '../provider/tools_notifier.dart';
+import 'package:simplebar/model/ingredient.dart';
+import 'package:simplebar/model/tool.dart';
 
+import '../provider/tools_notifier.dart';
 import '../provider/ingredients_notifier.dart';
+
 import '../model/cocktail.dart';
-import '../supplemental/ingredient_tile.dart';
+
 import '../supplemental/recipe_stepper.dart';
+import '../supplemental/ingredient_tile.dart';
+import '../supplemental/tool_tile.dart';
 import 'page.dart';
 
 class CocktailPage extends StatefulWidget with PageWithTitle {
@@ -32,6 +36,7 @@ class _CocktailPageState extends State<CocktailPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget._cocktail.title),
+        elevation: 0.0,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -108,24 +113,33 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.ingredients.keys.length > 0
                               ? Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      0.0, 15.0, 0.0, 15.0),
+                                  padding:
+                                      EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id
                                         in widget._cocktail.ingredients.keys)
-                                      IngredientListTile(
-                                        ingredientsProvider.getById(id),
-                                        subtitle: widget
-                                                ._cocktail.ingredients[id]
-                                                .toString() +
-                                            ' ' +
-                                            ingredientsProvider
-                                                .getById(id)
-                                                .measure
-                                                .toString()
-                                                .replaceAll(
-                                                    'IngredientMeasure.', ''),
-                                      )
+                                      FutureBuilder(
+                                        future: ingredientsProvider
+                                            .getFutureById(id),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            var ingredient =
+                                                snapshot.data as Ingredient;
+                                            return IngredientListTile(
+                                                ingredient,
+                                                subtitle: widget._cocktail
+                                                        .ingredients[id]
+                                                        .toString() +
+                                                    ' ' +
+                                                    ingredient.measure
+                                                        .toString()
+                                                        .replaceAll(
+                                                            'IngredientMeasure.',
+                                                            ''));
+                                          } else
+                                            return Text('Loading error');
+                                        },
+                                      ),
                                   ]),
                                 )
                               : Padding(
@@ -157,13 +171,23 @@ class _CocktailPageState extends State<CocktailPage> {
                           ),
                           widget._cocktail.tools.keys.length > 0
                               ? Padding(
-                                  padding: EdgeInsets.fromLTRB(
-                                      0.0, 15.0, 0.0, 15.0),
+                                  padding:
+                                      EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 15.0),
                                   child: Column(children: [
                                     for (int id in widget._cocktail.tools.keys)
-                                      ToolListTile(
-                                        toolsProvider.getById(id),
-                                        quantity: widget._cocktail.tools[id],
+                                      FutureBuilder(
+                                        future: toolsProvider.getByFutureId(id),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.hasData) {
+                                            var tool = snapshot.data as Tool;
+                                            return ToolListTile(
+                                              tool,
+                                              quantity:
+                                                  widget._cocktail.tools[id],
+                                            );
+                                          } else
+                                            return Text('Loading error');
+                                        },
                                       )
                                   ]),
                                 )
@@ -203,35 +227,6 @@ class _CocktailPageState extends State<CocktailPage> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ToolListTile extends StatelessWidget {
-  ToolListTile(this.tool, {this.quantity: 1})
-      : assert(tool != null),
-        assert(quantity != null && quantity > 0);
-
-  final int quantity;
-  final Tool tool;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      leading: ExcludeSemantics(
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Image.network(
-              tool.imageSource,
-            ),
-          ),
-          radius: 30,
-        ),
-      ),
-      title: Text(tool.title),
-      subtitle: Text(quantity.toString() + ' pcs'),
     );
   }
 }

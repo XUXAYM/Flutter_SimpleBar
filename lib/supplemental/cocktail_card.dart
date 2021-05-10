@@ -5,6 +5,7 @@ import '../provider/favorite_cocktails_notifier.dart';
 import '../page/cocktail_page.dart';
 import '../model/cocktail.dart';
 import '../constants.dart';
+import 'title_text.dart';
 
 class CocktailCard extends StatelessWidget {
   CocktailCard(this.cocktail) : super(key: ObjectKey(cocktail));
@@ -25,7 +26,7 @@ class CocktailCard extends StatelessWidget {
         ),
         clipBehavior: Clip.antiAlias,
         child: GridTileBar(
-          title: _TitleText(cocktail.title),
+          title: TitleText(cocktail.title),
           trailing: IconButton(
               icon: isInFavorite
                   ? Icon(Icons.favorite_rounded)
@@ -44,7 +45,7 @@ class CocktailCard extends StatelessWidget {
         ),
       ),
       child: Material(
-        color: Theme.of(context).cardColor,
+        color: Colors.white,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(kBorderRadius),
         ),
@@ -65,21 +66,6 @@ class CocktailCard extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-}
-
-class _TitleText extends StatelessWidget {
-  _TitleText(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      alignment: AlignmentDirectional.centerStart,
-      child: Text(text),
     );
   }
 }

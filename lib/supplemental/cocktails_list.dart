@@ -3,22 +3,17 @@ import 'package:flutter/material.dart';
 import '../model/cocktail.dart';
 import 'cocktail_card.dart';
 
-class CocktailsList extends StatefulWidget {
+class CocktailsList extends StatelessWidget {
   CocktailsList(this.cocktails);
 
   final List<Cocktail> cocktails;
 
   @override
-  _CocktailsListState createState() => _CocktailsListState();
-}
-
-class _CocktailsListState extends State<CocktailsList> {
-  @override
   Widget build(BuildContext context) {
     return GridView.builder(
       physics: BouncingScrollPhysics(),
-      itemBuilder: (context, index) => CocktailCard(widget.cocktails[index]),
-      itemCount: widget.cocktails.length,
+      itemBuilder: (context, index) => CocktailCard(cocktails[index]),
+      itemCount: cocktails.length,
       controller: ScrollController(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,

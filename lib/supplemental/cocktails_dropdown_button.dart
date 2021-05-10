@@ -20,7 +20,7 @@ class CocktailGroupDropdownButton extends StatelessWidget {
       ),
       iconSize: 24,
       elevation: 16,
-      style: theme.textTheme.bodyText1.copyWith(color: kShrineBrown900),
+      style: theme.textTheme.bodyText1,
       underline: Container(
         height: 0,
       ),

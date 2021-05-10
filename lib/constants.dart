@@ -11,16 +11,19 @@ final ThemeData kTheme = ThemeData(
 );
 
 final ThemeData kDarkTheme = ThemeData(
-  accentColor: Colors.black54,
-  primaryColor: Colors.black87,
-  scaffoldBackgroundColor: kShrineBackgroundWhite,
-  cardColor: kShrineBackgroundWhite,
+  brightness: Brightness.dark,
+  accentColor: Color(0xFF000000),
+  primaryColor:  Color(0xFF222222),
+  scaffoldBackgroundColor: Color(0xFF333333),
+  backgroundColor:  Color(0xFF222222),
+  cardColor: Color(0xFF333333),
+
   errorColor: kShrineErrorRed,
   primaryTextTheme: ThemeData.dark().textTheme.copyWith(
         bodyText1: kWhiteTextStyle,
       ),
   accentTextTheme: ThemeData.dark().textTheme.copyWith(
-        bodyText1: kWhiteTextStyle,
+        bodyText1: kRedTextStyle,
       ),
   textTheme: ThemeData.dark().textTheme.copyWith(
     bodyText1: kWhiteTextStyle,

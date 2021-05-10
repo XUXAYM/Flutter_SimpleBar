@@ -1,7 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
-enum ToolType { all, glass, barman_tool, decoration, other }
+enum ToolType {
+  all,
+  glass,
+  barman_tool,
+  presentation,
+  device,
+  other,
+}
 
 class Tool {
   final int id;
@@ -33,7 +40,7 @@ class Tool {
         description: mapTool['description'],
         imageSource: mapTool['imageSource'],
         type: ToolType.values
-            .firstWhere((e) => describeEnum(e) == mapTool['type']),
+            .firstWhere((e) => describeEnum(e) == mapTool['group']),
       );
 
   static Map toMap(Tool tool) => {

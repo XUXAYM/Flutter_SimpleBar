@@ -29,9 +29,9 @@ class Cocktail {
             title.isNotEmpty &&
             ingredients != null &&
             tools != null) {
-    volume = ingredients.length > 0
-        ? ingredients.values.fold(0, (sum, volume) => sum += volume)
-        : 0;
+    if(ingredients.length > 0){
+      volume =  ingredients.values.fold(0, (sum, volume) => sum += volume);
+    }
   }
 
   @override
@@ -50,9 +50,9 @@ class Cocktail {
         imageSource: mapCocktail['imageSource'],
         ingredients: mapCocktail['ingredients'],
         tools: mapCocktail['tools'],
-        recipe: mapCocktail['recipe'],
+        recipe: (mapCocktail['recipe'] as List).map<String>((e) => e.toString()).toList(),
         group: CocktailGroup.values
-            .firstWhere((e) => describeEnum(e) == mapCocktail['type']),
+            .firstWhere((e) => describeEnum(e) == mapCocktail['group']),
       );
 
   static Map toMap(Cocktail cocktail) => {
@@ -64,5 +64,8 @@ class Cocktail {
         'tools': cocktail.tools,
         'recipe': cocktail.recipe,
         'group': describeEnum(cocktail.group),
+        // 'degree': cocktail.degree,
+        // 'basis': cocktail.basis,
+        // 'volume': cocktail.volume,
       };
 }

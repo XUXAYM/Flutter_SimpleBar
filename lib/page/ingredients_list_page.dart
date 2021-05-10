@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:simplebar/model/ingredient.dart';
+import '../model/ingredient.dart';
+import '../supplemental/ingredient_tile.dart';
 import '../provider/ingredients_notifier.dart';
-import '../supplemental/ingredients_list.dart';
 import 'page.dart';
 
 class IngredientListPage extends StatefulWidget with PageWithTitle {
@@ -30,6 +31,9 @@ class _IngredientListPageState extends State<IngredientListPage>
     _tabController.index = tabIndex.value;
   }
 
+  Stream<DocumentSnapshot> getLocaleData(QueryDocumentSnapshot doc) =>
+      doc.reference.collection('locale').doc('ru').snapshots();
+
   @override
   void initState() {
     _tabController = TabController(
@@ -38,12 +42,12 @@ class _IngredientListPageState extends State<IngredientListPage>
       vsync: this,
     );
     _tabController.addListener(() {
-      // When the tab controller's value is updated, make sure to update the
-      // tab index value, which is state restorable.
       setState(() {
         tabIndex.value = _tabController.index;
       });
     });
+    FirebaseFirestore.instance.settings =
+        Settings(cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED);
     super.initState();
   }
 
@@ -61,9 +65,6 @@ class _IngredientListPageState extends State<IngredientListPage>
     final tabs = IngredientGroup.values.skip(1).toList();
 
     return Scaffold(
-      //backgroundColor: Colors.transparent,
-      //backgroundColor: Theme.of(context).appBarTheme.,
-      backgroundColor: Color(0xfffafafa),
       appBar: TabBar(
         indicatorColor: Theme.of(context).accentColor,
         controller: _tabController,
@@ -81,12 +82,142 @@ class _IngredientListPageState extends State<IngredientListPage>
       body: TabBarView(
         controller: _tabController,
         children: [
-          for (final tab in tabs)
-            ingredientsNotifier.loadIngredients(tab).length > 0
-                ? IngredientsList(ingredientsNotifier.loadIngredients(tab))
-                : Center(child: Text('There is nothing here now'))
+          for (final tab in tabs) //ingredientsGroupStreamFull
+            StreamBuilder<QuerySnapshot>(
+              stream: ingredientsNotifier.ingredientsGroupStream(tab),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var docs = snapshot.data.docs;
+                  return docs.length > 0
+                      ? new ListView.builder(
+                          itemCount: docs.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: StreamBuilder<DocumentSnapshot>(
+                                  stream: getLocaleData(docs[index]),
+                                  builder: (context, localeDoc) {
+                                    if (localeDoc.hasData) {
+                                      var ingredientMappedData =
+                                      docs[index].data();
+                                      ingredientMappedData
+                                          .addAll(localeDoc.data.data());
+                                      return IngredientListTile(
+                                          Ingredient.fromMap(
+                                              ingredientMappedData));
+                                    } else {
+                                      return Card(
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            backgroundColor: Colors.lightBlue,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }),
+                            );
+                          })
+                      : Center(child: Text('There are no ingredients now'));
+                } else {
+                  return Center(
+                      child: CircularProgressIndicator(
+                    backgroundColor: Colors.lightBlue,
+                  ));
+                }
+              },
+            ),
         ],
       ),
+      // body: TabBarView(
+      //   controller: _tabController,
+      //   children: [
+      //     for (final tab in tabs)
+      //       StreamBuilder<QuerySnapshot> (
+      //         stream: ingredientsNotifier.ingredientsGroupStream(tab),
+      //         builder: (context, snapshot) {
+      //           if (snapshot.connectionState == ConnectionState.waiting) {
+      //             return const Center(child: CircularProgressIndicator());
+      //           }
+      //
+      //           if (snapshot.hasError) {
+      //             return Center(child: Text(snapshot.error.toString()));
+      //           }
+      //           QuerySnapshot querySnapshot = snapshot.data;
+      //
+      //           List<Ingredient> ingredients = [];
+      //           for(var doc in querySnapshot.docs){
+      //             var mapData = doc.data();
+      //             var ref = doc.reference.collection('locale').doc('ru');
+      //           }
+      //
+      //           return ListView.builder(
+      //             itemCount: querySnapshot.size,
+      //             itemBuilder: (context, index) => Movie(querySnapshot.docs[index]),
+      //           );
+      //
+      //           return ingredientsNotifier.loadIngredients(tab).length > 0
+      //               ? IngredientsList(ingredientsNotifier.loadIngredients(tab))
+      //               : Center(child: Text('There is nothing here now'));
+      //         },
+      //       )
+      //   ],
+      // ),
     );
   }
 }
+// StreamBuilder<QuerySnapshot>(
+// stream: ingredientsNotifier.ingredientsGroupStream(tab),
+// builder: (context, snapshot) {
+// if (snapshot.hasData) {
+// var doc = snapshot.data.docs;
+// return new ListView.builder(
+// itemCount: doc.length,
+// itemBuilder: (context, index) {
+// print(doc[index].id);
+// return Padding(
+// padding: const EdgeInsets.all(8.0),
+// child: Card(
+// child: Column(
+// children: <Widget>[
+// Text(doc[index].data()['id'].toString()),
+// SizedBox(
+// height: 10.0,
+// ),
+// Text(doc[index].data()['group']),
+// SizedBox(
+// height: 10.0,
+// ),
+// Text(doc[index].data()['measure']),
+// SizedBox(
+// height: 10.0,
+// ),
+// Text(doc[index].data()['imageSource']),
+// ],
+// ),
+// ),
+// );
+// });
+// } else {
+// return Center(child: CircularProgressIndicator(
+// backgroundColor: Colors.lightBlue,
+// ));
+// }
+// },
+// ),
+
+// FutureBuilder<List<Ingredient>>(
+// future: ingredientsNotifier.ingredientsGroupStreamWithData(tab),
+// builder: (context, snapshot) {
+// if(snapshot.hasData){
+// return snapshot.data.length > 0
+// ? IngredientsList(
+// snapshot.data)
+//     : Center(child: Text('There is nothing here now'));
+// }else{
+// return Center(
+// child: CircularProgressIndicator(
+// backgroundColor: Colors.lightBlue,
+// ));
+// }
+// },
+// ),

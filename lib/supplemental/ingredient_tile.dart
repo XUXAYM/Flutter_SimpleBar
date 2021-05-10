@@ -1,42 +1,29 @@
 import 'package:flutter/material.dart';
 import '../model/ingredient.dart';
+import 'circle_image.dart';
 
-
-class IngredientListTile extends StatefulWidget {
-  IngredientListTile(this.ingredient, {this.subtitle: ''}) : assert(ingredient != null);
+class IngredientListTile extends StatelessWidget {
+  IngredientListTile(this.ingredient, {this.subtitle: ''})
+      : assert(ingredient != null);
 
   final Ingredient ingredient;
   final String subtitle;
 
   @override
-  _IngredientListTileState createState() => _IngredientListTileState();
-}
-
-class _IngredientListTileState extends State<IngredientListTile> {
-  @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: ExcludeSemantics(
-        child: CircleAvatar(
-          backgroundColor: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Image.network(
-              widget.ingredient.imageSource,
-            ),
-          ),
-          radius: 30,
-        ),
+        child: CircleImage(src: ingredient.imageSource),
       ),
-      title: Text(widget.ingredient.title),
-      subtitle: Text(widget.subtitle),
+      title: Text(ingredient.title),
+      subtitle: Text(subtitle),
       trailing: IconButton(
         tooltip: 'Add to my bar',
         alignment: Alignment.center,
-        icon: Icon(Icons.add, color: Theme.of(context).accentColor,),
-        onPressed: ()
-        {
-        },
+        icon: Icon(
+          Icons.add,
+        ),
+        onPressed: () {},
       ),
     );
   }
