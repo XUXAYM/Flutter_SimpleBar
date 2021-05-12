@@ -11,16 +11,79 @@ class MyBarPage extends StatefulWidget with PageWithTitle {
   _MyBarPageState createState() => _MyBarPageState();
 }
 
-class _MyBarPageState extends State<MyBarPage> {
+class _MyBarPageState extends State<MyBarPage>
+    with SingleTickerProviderStateMixin, RestorationMixin {
+  TabController _tabController;
+
+  final RestorableInt tabIndex = RestorableInt(0);
+
+  @override
+  String get restorationId => 'tab_scrollable_bar';
+
+  @override
+  void restoreState(RestorationBucket oldBucket, bool initialRestore) {
+    registerForRestoration(tabIndex, 'tab_bar');
+    _tabController.index = tabIndex.value;
+  }
+
+  @override
+  void initState() {
+    _tabController = TabController(
+      initialIndex: 0,
+      length: 3,
+      vsync: this,
+    );
+    _tabController.addListener(() {
+      setState(() {
+        tabIndex.value = _tabController.index;
+      });
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    tabIndex.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-          ],
-        ),
+      appBar: TabBar(
+        indicatorColor: Theme.of(context).tabBarTheme.labelColor,
+        controller: _tabController,
+        tabs: [
+          Tab(text: 'First'),
+          Tab(text: 'My Ingredients'),
+          Tab(text: 'My Cocktails'),
+        ],
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Center(
+            child: Container(
+              height: 100,
+              width: 100,
+              color: Colors.red,
+            ),
+          ),
+          Center(
+            child: Container(
+              height: 100,
+              width: 100,
+              color: Colors.blue,
+            ),
+          ),
+          Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {}
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -62,8 +125,6 @@ class _MyBarPageState extends State<MyBarPage> {
 //     }
 //   }
 // }
-
-
 
 //
 //

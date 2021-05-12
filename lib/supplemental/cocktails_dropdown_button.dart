@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class CocktailGroupDropdownButton extends StatelessWidget {
         return DropdownMenuItem<CocktailGroup>(
           value: value,
           child: Text(
-              value.toString().replaceAll('CocktailGroup.', '').toUpperCase()),
+              describeEnum(value).toUpperCase()),
         );
       }).toList(),
     );

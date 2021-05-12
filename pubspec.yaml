@@ -26,6 +26,7 @@ dependencies:
   postgres: ^2.3.2
   animations: ^2.0.0
   flutter_xlider: ^3.4.0
+  skeleton_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

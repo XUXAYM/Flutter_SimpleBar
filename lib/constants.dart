@@ -3,22 +3,39 @@ import 'package:flutter/material.dart';
 const kBorderRadius = Radius.circular(32.0);
 
 final ThemeData kTheme = ThemeData(
-  accentColor: kShrineBrown900,
-  primaryColor: kShrinePink100,
-  scaffoldBackgroundColor: kShrineBackgroundWhite,
-  cardColor: kShrineBackgroundWhite,
-  errorColor: kShrineErrorRed,
-);
+    accentColor: kShrineBrown900,
+    primaryColor: Color(0xFF333333),
+    scaffoldBackgroundColor: kShrineBackgroundWhite,
+    cardColor: kShrineBackgroundWhite,
+    errorColor: kShrineErrorRed,
+    textTheme: ThemeData.light().textTheme.copyWith(
+        subtitle2: ThemeData.light()
+            .textTheme
+            .subtitle2
+            .copyWith(color: Colors.white)),
+    accentTextTheme: ThemeData.light().accentTextTheme.copyWith(
+          subtitle1: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF222222),
+          ),
+        ),
+    tabBarTheme: ThemeData.light().tabBarTheme.copyWith(
+          labelColor: Color(0xFF333333),
+          unselectedLabelColor: Color(0xFF777777),
+        ));
 
 final ThemeData kDarkTheme = ThemeData(
   brightness: Brightness.dark,
   accentColor: Color(0xFF000000),
-  primaryColor:  Color(0xFF222222),
+  primaryColor: Color(0xFF222222),
   scaffoldBackgroundColor: Color(0xFF333333),
-  backgroundColor:  Color(0xFF222222),
+  backgroundColor: Color(0xFF222222),
   cardColor: Color(0xFF333333),
-
-  errorColor: kShrineErrorRed,
+  errorColor: kShrineErrorRed, tabBarTheme: ThemeData.dark().tabBarTheme.copyWith(
+      labelColor: Color(0xFFFAFAFA),
+      unselectedLabelColor: Color(0xFF777777),
+    ),
   primaryTextTheme: ThemeData.dark().textTheme.copyWith(
         bodyText1: kWhiteTextStyle,
       ),
@@ -26,8 +43,8 @@ final ThemeData kDarkTheme = ThemeData(
         bodyText1: kRedTextStyle,
       ),
   textTheme: ThemeData.dark().textTheme.copyWith(
-    bodyText1: kWhiteTextStyle,
-  ),
+        bodyText1: kWhiteTextStyle,
+      ),
 );
 
 final TextStyle kWhiteTextStyle = TextStyle(

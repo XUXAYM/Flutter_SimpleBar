@@ -1,7 +1,9 @@
+import 'dart:collection';
+
 import '../tool.dart';
 
 class ToolsRepository {
-  static List<Tool> loadTools() {
+  static HashSet<Tool> loadTools() {
     var allTools = <Tool> [
       Tool(
         id: 0,
@@ -22,6 +24,6 @@ class ToolsRepository {
         imageSource: 'https://i.ibb.co/6ycQwjN/cocktail-spoon.jpg',
       ),
     ];
-    return allTools;
+    return HashSet.of(allTools);
   }
 }

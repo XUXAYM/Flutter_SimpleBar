@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplebar/provider/my_bar_notifier.dart';
 
 import 'app.dart';
 
@@ -25,6 +26,14 @@ void main() {
           update: (context, cocktailsPool, favorite) {
             if (favorite == null) throw ArgumentError.notNull('favorite');
             favorite.cocktailsPool = cocktailsPool;
+            return favorite;
+          },
+        ),
+        ChangeNotifierProxyProvider<IngredientsPoolNotifier, MyBarNotifier>(
+          create: (context) => MyBarNotifier(),
+          update: (context, ingredientsPool, favorite) {
+            if (favorite == null) throw ArgumentError.notNull('favorite');
+            favorite.ingredientsPool = ingredientsPool;
             return favorite;
           },
         ),

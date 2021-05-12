@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoadingPage extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class LoadingPage extends StatefulWidget {
 class _LoadingPageState extends State<LoadingPage> {
   void loadingData() async{
     await Firebase.initializeApp();
+    await SharedPreferences.getInstance();
     Navigator.popAndPushNamed(context, '/main');
   }
 

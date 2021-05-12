@@ -15,7 +15,7 @@ class CocktailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isInFavorite = context.select<FavoriteCocktailsNotifier, bool>(
-      (favorite) => favorite.cocktails.contains(cocktail),
+      (favorite) => favorite.isFavorite(cocktail.id),
     );
 
     return GridTile(
@@ -53,7 +53,7 @@ class CocktailCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           child: Padding(
-            padding: EdgeInsets.only(top: 32.0, bottom: 64.0),
+            padding: EdgeInsets.only(top: 32.0, bottom: 64.0, left: 32.0, right: 32.0),
             child: Ink.image(
               image: NetworkImage(cocktail.imageSource),
             ),

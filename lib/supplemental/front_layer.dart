@@ -38,9 +38,8 @@ class FrontLayer extends StatelessWidget {
                   elevation: 5,
                   child: DefaultTextStyle(
                     style: Theme.of(context)
-                        .primaryTextTheme
-                        .headline6
-                        .copyWith(fontSize: 16),
+                        .accentTextTheme
+                        .subtitle1,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
                     child: Stack(

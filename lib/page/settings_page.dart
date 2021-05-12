@@ -19,7 +19,8 @@ class SettingsPage extends StatelessWidget with PageWithTitle {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                Text('Theme:'),
+                Text('Theme:',
+                style: Theme.of(context).textTheme.subtitle1,),
                 SizedBox(width: 8.0,),
                 DropdownButton<ThemeMode>(
                   value: settingsData.mode,

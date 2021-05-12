@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
@@ -12,8 +14,8 @@ class Cocktail {
   int basis;
   int degree;
   int volume;
-  final Map<int, int> ingredients;
-  final Map<int, int> tools;
+  final HashMap<int, int> ingredients;
+  final HashMap<int, int> tools;
   final String imageSource;
 
   Cocktail({

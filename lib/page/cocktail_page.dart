@@ -37,6 +37,11 @@ class _CocktailPageState extends State<CocktailPage> {
       appBar: AppBar(
         title: Text(widget._cocktail.title),
         elevation: 0.0,
+        actions: [
+          IconButton(icon: Icon(Icons.calculate_rounded), onPressed: () {
+
+          },)
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -176,7 +181,7 @@ class _CocktailPageState extends State<CocktailPage> {
                                   child: Column(children: [
                                     for (int id in widget._cocktail.tools.keys)
                                       FutureBuilder(
-                                        future: toolsProvider.getByFutureId(id),
+                                        future: toolsProvider.getFutureById(id),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
                                             var tool = snapshot.data as Tool;

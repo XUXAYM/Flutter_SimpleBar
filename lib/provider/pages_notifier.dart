@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../page/animation_test_page.dart';
 import '../page/settings_page.dart';
 import '../page/home.dart';
 import '../page/my_bar_page.dart';
@@ -16,17 +15,16 @@ class PagesPoolNotifier with ChangeNotifier{
     _currentFrontPage = _frontPages.first;
     _currentBackdropPage = _backPages.first;
   }
-  List<Widget> _frontPages = [
+  final List<Widget> _frontPages = [
     CocktailsListPage( title: 'Cocktails'),
     IngredientListPage( title: 'Ingredients'),
     MyBarPage(title: 'My Bar',),
-    TransitionsHomePage(title: 'Animation test',),
     SettingsPage(title:'Settings',),
   ];
 
   static GlobalKey _backPageKey =  GlobalKey();
 
-  List<Widget> _backPages = [
+  final List<Widget> _backPages = [
     CategoryMenuPage(key: _backPageKey,),
     CocktailsFilterPage(key: _backPageKey),
   ];

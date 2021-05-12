@@ -1,42 +1,38 @@
+import 'dart:collection';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 import '../model/repository/cocktails_repository.dart';
 import '../model/cocktail.dart';
 
-String langCode = 'ru';
-String collectionName = 'cocktail';
-String subCollectionName = 'locale';
+const String langCode = 'ru';
+const String collectionName = 'cocktail';
+const String subCollectionName = 'locale';
 
 class CocktailsPoolNotifier with ChangeNotifier {
-  final List<Cocktail> _cocktails = CocktailsRepository().loadCocktails();
+  final HashSet<Cocktail> _cocktails = CocktailsRepository().loadCocktails();
   final collection = FirebaseFirestore.instance.collection(collectionName);
 
   Cocktail getById(int id) =>
       _cocktails.firstWhere((c) => c.id == id, orElse: () => null);
 
-  Cocktail getByPosition(int index) =>
-      (index < _cocktails.length && index >= 0) ? _cocktails[index] : null;
-
-  List<Cocktail> loadCocktails(CocktailGroup group) =>
-      group == CocktailGroup.all
-          ? _cocktails
-          : _cocktails.where((Cocktail c) => c.group == group).toList();
+  Future<Cocktail> getFutureById(int id) async{
+    var snapshot = await collection.where('id', isEqualTo: id).get();
+    var doc = snapshot.docs[0];
+    var cocktailMappedData = doc.data();
+    var localeDataSnapshot = doc.reference.collection(subCollectionName).doc(langCode);
+    var localeData = await localeDataSnapshot.get();
+    cocktailMappedData['tools'] = HashMap.of((cocktailMappedData['tools'] as Map).map<int, int>((key, value) => MapEntry(int.parse(key), value)));
+    cocktailMappedData['ingredients'] = HashMap.of((cocktailMappedData['ingredients'] as Map).map<int, int>((key, value) => MapEntry(int.parse(key), value)));
+    cocktailMappedData.addAll( localeData.data());
+    return Cocktail.fromMap(cocktailMappedData);
+  }
 
   Stream<QuerySnapshot> cocktailsGroupStream(CocktailGroup group) => group ==
           CocktailGroup.all
       ? collection.snapshots()
       : collection.where('group', isEqualTo: describeEnum(group)).snapshots();
-
-  int get minDegree => loadCocktails(_group).map<int>((c) => c.degree).fold(
-      100,
-      (previousValue, element) => previousValue =
-          previousValue > (element ?? 100) ? element : previousValue);
-
-  int get maxDegree => loadCocktails(_group).map<int>((c) => c.degree).fold(
-      0,
-      (previousValue, element) => previousValue =
-          previousValue < (element ?? 0) ? element : previousValue);
 
   CocktailGroup _group = CocktailGroup.all;
 

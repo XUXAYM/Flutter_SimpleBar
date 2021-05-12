@@ -22,7 +22,7 @@ enum IngredientGroup {
   liqueur,
   bitter,
   wine,
-  bear,
+  beer,
   syrup,
   juice,
   drink,

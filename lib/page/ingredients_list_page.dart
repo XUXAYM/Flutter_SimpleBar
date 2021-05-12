@@ -66,7 +66,7 @@ class _IngredientListPageState extends State<IngredientListPage>
 
     return Scaffold(
       appBar: TabBar(
-        indicatorColor: Theme.of(context).accentColor,
+        indicatorColor: Theme.of(context).tabBarTheme.labelColor,
         controller: _tabController,
         isScrollable: true,
         tabs: [
@@ -99,30 +99,26 @@ class _IngredientListPageState extends State<IngredientListPage>
                                   builder: (context, localeDoc) {
                                     if (localeDoc.hasData) {
                                       var ingredientMappedData =
-                                      docs[index].data();
+                                          docs[index].data();
                                       ingredientMappedData
                                           .addAll(localeDoc.data.data());
+                                      var ingredient = Ingredient.fromMap(
+                                          ingredientMappedData);
                                       return IngredientListTile(
-                                          Ingredient.fromMap(
-                                              ingredientMappedData));
-                                    } else {
-                                      return Card(
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            backgroundColor: Colors.lightBlue,
-                                          ),
-                                        ),
+                                        ingredient,
+                                        subtitle: ingredient.degree > 0
+                                            ? "Degree: ${ingredient.degree}"
+                                            : '',
                                       );
+                                    } else {
+                                      return Center();
                                     }
                                   }),
                             );
                           })
                       : Center(child: Text('There are no ingredients now'));
                 } else {
-                  return Center(
-                      child: CircularProgressIndicator(
-                    backgroundColor: Colors.lightBlue,
-                  ));
+                  return Center(child: Text('There are no ingredients now'));
                 }
               },
             ),
