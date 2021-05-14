@@ -1,12 +1,9 @@
-import 'dart:collection';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/page/can_make_cocktails_page.dart';
 
 import '../provider/my_bar_notifier.dart';
 import '../model/ingredient.dart';
+import '../constants.dart';
 import 'circle_image.dart';
 
 class IngredientListTile extends StatelessWidget {
@@ -22,9 +19,6 @@ class IngredientListTile extends StatelessWidget {
       (myBar) => myBar.isHaveIngredient(ingredient.id),
     );
 
-    bool isContainsAllIngredients(HashSet<int> subList, HashSet<int> list) =>
-        subList.length == list.intersection(subList).length;
-
     return ListTile(
       leading: ExcludeSemantics(
         child: CircleImage(src: ingredient.imageSource),
@@ -37,52 +31,19 @@ class IngredientListTile extends StatelessWidget {
         icon: Icon(
           isInBar ? Icons.clear : Icons.add,
         ),
-        onPressed: isInBar
-            ? () {
-                var added = context.read<MyBarNotifier>();
-                added.remove(ingredient);
-              }
-            : () {
-                var added = context.read<MyBarNotifier>();
-                added.add(ingredient);
-                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(
-                      'Ingredient added.'),
-                  action: SnackBarAction(
-                    label: 'Look to cocktails with my ingredients',
-                    textColor: Colors.white,
-                    onPressed: () async {
-                      var snapshot = await FirebaseFirestore.instance
-                          .collection('cocktail')
-                          .get();
-                      if (snapshot.docs.isEmpty) {
-                        print('Empty');
-                      } else {
-                        HashSet<int> cocktailsId = HashSet();
-                        for (var doc in snapshot.docs) {
-                          var cocktailData = doc.data();
-                          var ingredients = (cocktailData['ingredients'] as Map)
-                              .keys
-                              .map((id) => int.parse(id));
-
-                          if (isContainsAllIngredients(
-                              HashSet.from(ingredients),
-                              added.ingredientsId.toSet())) {
-                            cocktailsId.add(cocktailData['id']);
-                          }
-                        }
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  CanMakeCocktailsPage(cocktailsId),
-                            ));
-                      }
-                    },
-                  ),
-                ));
-              },
+        onPressed: () {
+          var myBar = context.read<MyBarNotifier>();
+          isInBar ? myBar.remove(ingredient) : myBar.add(ingredient);
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(isInBar ? 'Ingredient removed' : 'Ingredient added'),
+            action: SnackBarAction(
+              label: 'Go to cocktails with my ingredients',
+              textColor: kTitleGreyColor,
+              onPressed: () => Navigator.pushNamed(context, '/can_make'),
+            ),
+          ));
+        },
       ),
     );
   }

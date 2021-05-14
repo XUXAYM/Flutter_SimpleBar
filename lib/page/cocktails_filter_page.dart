@@ -15,6 +15,7 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
   double _lowerValue = 0;
   double _upperValue = 100;
   var selectedRange = RangeValues(0.0, 100.0);
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -26,24 +27,35 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: 32.0,),
+                SizedBox(
+                  height: 32.0,
+                ),
                 FlutterSlider(
                   values: [_lowerValue, _upperValue],
                   max: 100,
                   min: 0,
                   rangeSlider: true,
                   step: FlutterSliderStep(step: 1.0),
-                  
-                  tooltip: FlutterSliderTooltip(
-                    alwaysShowTooltip: true,
-                    direction: FlutterSliderTooltipDirection.right,
-                    boxStyle: FlutterSliderTooltipBox(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    )
+                  trackBar: FlutterSliderTrackBar(
+                    inactiveTrackBar: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white24,
+                      //border: Border.all(width: 3, color: Colors.blue),
+                    ),
+                    activeTrackBar: BoxDecoration(
+                      color: Color(0xFFFAFAFA),
+                    ),
                   ),
+                  // tooltip: FlutterSliderTooltip(
+                  //   alwaysShowTooltip: true,
+                  //   direction: FlutterSliderTooltipDirection.right,
+                  //   boxStyle: FlutterSliderTooltipBox(
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(8.0),
+                  //     ),
+                  //   )
+                  // ),
                   handlerAnimation: FlutterSliderHandlerAnimation(
                       curve: Curves.elasticOut,
                       reverseCurve: null,
@@ -54,14 +66,6 @@ class _CocktailsFilterPageState extends State<CocktailsFilterPage> {
                     _upperValue = upperValue;
                     setState(() {});
                   },
-                ),
-                Wrap(
-                  children: [
-                    FilterChip(
-                      label: Text('mocktails'),
-                      onSelected: (value) {},
-                    )
-                  ],
                 ),
               ],
             ),

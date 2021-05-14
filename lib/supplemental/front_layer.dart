@@ -17,7 +17,7 @@ class FrontLayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      elevation: 8.0,
+      elevation: 0.0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
@@ -35,7 +35,7 @@ class FrontLayer extends StatelessWidget {
                     borderRadius:
                     BorderRadius.vertical(top: Radius.circular(16)),
                   ),
-                  elevation: 5,
+                  elevation: 0,
                   child: DefaultTextStyle(
                     style: Theme.of(context)
                         .accentTextTheme

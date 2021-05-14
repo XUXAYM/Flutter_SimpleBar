@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,10 +24,41 @@ class MyBarNotifier extends ChangeNotifier {
       } else
         prefs.setStringList(kMyBarIngredientsVariable, []);
     });
+    findCocktailsWithMyIngredients();
   }
+
+  IngredientsPoolNotifier get ingredientsPool => _ingredientsPool;
 
   UnmodifiableSetView<int> get ingredientsId =>
       UnmodifiableSetView<int>(_ingredientsId);
+
+  UnmodifiableSetView<int> get cocktailsId =>
+      UnmodifiableSetView<int>(_cocktailsId);
+
+  bool isContainsAllIngredients(HashSet<int> subList) =>
+      subList.length == ingredientsId.intersection(subList).length;
+
+  Future<void> findCocktailsWithMyIngredients() async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection('cocktail').get();
+    _cocktailsId.clear();
+    if (snapshot.docs.isEmpty) {
+      print('Empty');
+    } else {
+      for (var doc in snapshot.docs) {
+        var cocktailData = doc.data();
+        var ingredients = (cocktailData['ingredients'] as Map)
+            .keys
+            .map((id) => int.parse(id));
+
+        if (isContainsAllIngredients(HashSet.from(ingredients))) {
+          _cocktailsId.add(cocktailData['id']);
+        }
+      }
+    }
+    print('Ready');
+    notifyListeners();
+  }
 
   set ingredientsPool(IngredientsPoolNotifier newIngredientsPool) {
     _ingredientsPool = newIngredientsPool;
@@ -38,6 +70,7 @@ class MyBarNotifier extends ChangeNotifier {
   void add(Ingredient ingredient) async {
     _ingredientsId.add(ingredient.id);
     notifyListeners();
+    await findCocktailsWithMyIngredients();
     await _prefs
       ..setStringList(kMyBarIngredientsVariable,
           _ingredientsId.map<String>((e) => e.toString()).toList());
@@ -46,6 +79,7 @@ class MyBarNotifier extends ChangeNotifier {
   void remove(Ingredient ingredient) async {
     _ingredientsId.remove(ingredient.id);
     notifyListeners();
+    await findCocktailsWithMyIngredients();
     await _prefs
       ..setStringList(kMyBarIngredientsVariable,
           _ingredientsId.map<String>((e) => e.toString()).toList());

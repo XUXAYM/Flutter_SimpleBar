@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'page.dart';
 import '../model/cocktail.dart';
 import '../supplemental/cocktail_card.dart';
 import '../provider/cocktails_notifier.dart';
+import 'page.dart';
 
 class CocktailsListPage extends StatelessWidget with PageWithTitle {
   CocktailsListPage({this.title: ''});
@@ -89,16 +89,6 @@ class CocktailsListPage extends StatelessWidget with PageWithTitle {
         // child: CocktailsList(
         //   cocktailsNotifier.loadCocktails(cocktailsNotifier.group),
       ),
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        child: Icon(Icons.local_bar_rounded),
-        onPressed: () => Navigator.pushNamed(context, '/favorite'),
-        backgroundColor: Theme.of(context).accentColor,
-        tooltip: 'Favorite cocktails',
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterFloat,
-      floatingActionButtonAnimator: FloatingActionButtonAnimator.scaling,
     );
   }
 }

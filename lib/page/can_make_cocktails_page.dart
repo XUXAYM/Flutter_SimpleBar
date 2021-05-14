@@ -1,21 +1,19 @@
-import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/model/cocktail.dart';
-import 'package:simplebar/provider/cocktails_notifier.dart';
-import 'package:simplebar/supplemental/cocktail_card.dart';
 
+import '../model/cocktail.dart';
+import '../provider/my_bar_notifier.dart';
+import '../provider/cocktails_notifier.dart';
+import '../supplemental/cocktail_card.dart';
 import '../constants.dart';
 
 class CanMakeCocktailsPage extends StatelessWidget {
-  CanMakeCocktailsPage(this.cocktailsId);
-
-  final HashSet<int> cocktailsId;
+  CanMakeCocktailsPage();
 
   @override
   Widget build(BuildContext context) {
     var cocktailsNotifier = context.watch<CocktailsPoolNotifier>();
+    var myBar = context.watch<MyBarNotifier>();
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +30,7 @@ class CanMakeCocktailsPage extends StatelessWidget {
         foregroundColor: Theme.of(context).primaryColor,
         backwardsCompatibility: false,
       ),
-      body: cocktailsId.isNotEmpty
+      body: myBar.cocktailsId.isNotEmpty
           ? SafeArea(
           child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -42,10 +40,10 @@ class CanMakeCocktailsPage extends StatelessWidget {
               physics: BouncingScrollPhysics(),
               controller: ScrollController(),
               padding: EdgeInsets.all(16.0),
-              itemCount: cocktailsId.length,
+              itemCount: myBar.cocktailsId.length,
               itemBuilder: (context, index) {
                 return FutureBuilder(
-                  future: cocktailsNotifier.getFutureById(cocktailsId.elementAt(index)),
+                  future: cocktailsNotifier.getFutureById(myBar.cocktailsId.elementAt(index)),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       print(

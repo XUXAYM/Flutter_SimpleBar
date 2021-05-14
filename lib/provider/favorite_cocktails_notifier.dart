@@ -10,12 +10,12 @@ const String kFavoriteCocktailsVariable = 'favorite_cocktails';
 class FavoriteCocktailsNotifier extends ChangeNotifier {
   CocktailsPoolNotifier _cocktailsPool;
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-  final HashSet<int> _cocktailsId = HashSet();
+  final HashSet<int> _favoriteCocktailsId = HashSet();
 
   FavoriteCocktailsNotifier(){
     _prefs.then((prefs){
       if(prefs.containsKey(kFavoriteCocktailsVariable)){
-        _cocktailsId.addAll(prefs.getStringList(kFavoriteCocktailsVariable).map((e) => int.parse(e)));
+        _favoriteCocktailsId.addAll(prefs.getStringList(kFavoriteCocktailsVariable).map((e) => int.parse(e)));
         notifyListeners();
       }
       else
@@ -30,23 +30,23 @@ class FavoriteCocktailsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  UnmodifiableSetView<Cocktail> get cocktails =>
-      UnmodifiableSetView<Cocktail>(_cocktailsId.map((id) => _cocktailsPool.getById(id)));
+  UnmodifiableSetView<int> get cocktailsId =>
+      UnmodifiableSetView<int>(_favoriteCocktailsId);
 
   HashSet<Future<Cocktail>> get futureCocktails =>
-      HashSet.of(_cocktailsId.map((id) => _cocktailsPool.getFutureById(id)));
+      HashSet.of(_favoriteCocktailsId.map((id) => _cocktailsPool.getFutureById(id)));
 
-  bool isFavorite(int id) => _cocktailsId.contains(id);
+  bool isFavorite(int id) => _favoriteCocktailsId.contains(id);
 
   void add(Cocktail cocktail) async {
-    _cocktailsId.add(cocktail.id);
+    _favoriteCocktailsId.add(cocktail.id);
     notifyListeners();
-    await _prefs..setStringList(kFavoriteCocktailsVariable, _cocktailsId.map<String>((id) => id.toString()).toList());
+    await _prefs..setStringList(kFavoriteCocktailsVariable, _favoriteCocktailsId.map<String>((id) => id.toString()).toList());
   }
 
   void remove(Cocktail cocktail) async{
-    _cocktailsId.remove(cocktail.id);
+    _favoriteCocktailsId.remove(cocktail.id);
     notifyListeners();
-    await _prefs..setStringList(kFavoriteCocktailsVariable, _cocktailsId.map<String>((id) => id.toString()).toList());
+    await _prefs..setStringList(kFavoriteCocktailsVariable, _favoriteCocktailsId.map<String>((id) => id.toString()).toList());
   }
 }

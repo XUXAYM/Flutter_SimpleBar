@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/settings_notifier.dart';
+import '../constants.dart';
 import 'page.dart';
 
 class SettingsPage extends StatelessWidget with PageWithTitle {
@@ -15,25 +16,44 @@ class SettingsPage extends StatelessWidget with PageWithTitle {
     return Consumer<SettingsNotifier>(
       builder: (context, settingsData, _) => Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Text('Theme:',
-                style: Theme.of(context).textTheme.subtitle1,),
-                SizedBox(width: 8.0,),
-                DropdownButton<ThemeMode>(
-                  value: settingsData.mode,
-                  onChanged: (mode) => settingsData.mode = mode,
-                  items: ThemeMode.values.map<DropdownMenuItem<ThemeMode>>(
-                        (mode) => DropdownMenuItem(
-                      child: Text(describeEnum(mode)),
-                      value: mode,
-                    ),
-                  ).toList(),
-                ),
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Theme:',
+                        style: Theme.of(context).textTheme.subtitle1,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      DropdownButton<ThemeMode>(
+                        value: settingsData.mode,
+                        onChanged: (mode) => settingsData.mode = mode,
+                        items: ThemeMode.values
+                            .map<DropdownMenuItem<ThemeMode>>(
+                              (mode) => DropdownMenuItem(
+                            child: Text(describeEnum(mode)),
+                            value: mode,
+                          ),
+                        )
+                            .toList(),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
+          ),
+          Divider(
+            thickness: 1.0,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('Created by Dmitry Markin', style: TextStyle(color: kTitleGreyColor),),
           ),
         ],
       ),

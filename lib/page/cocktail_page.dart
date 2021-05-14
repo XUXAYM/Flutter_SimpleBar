@@ -1,16 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:simplebar/model/ingredient.dart';
-import 'package:simplebar/model/tool.dart';
 
 import '../provider/tools_notifier.dart';
 import '../provider/ingredients_notifier.dart';
 
 import '../model/cocktail.dart';
+import '../model/ingredient.dart';
+import "../model/tool.dart";
 
 import '../supplemental/recipe_stepper.dart';
 import '../supplemental/ingredient_tile.dart';
 import '../supplemental/tool_tile.dart';
+import '../supplemental/info_block_card.dart';
+import '../supplemental/info_tile.dart';
+
+import '../constants.dart';
+
 import 'page.dart';
 
 class CocktailPage extends StatefulWidget with PageWithTitle {
@@ -38,9 +44,10 @@ class _CocktailPageState extends State<CocktailPage> {
         title: Text(widget._cocktail.title),
         elevation: 0.0,
         actions: [
-          IconButton(icon: Icon(Icons.calculate_rounded), onPressed: () {
-
-          },)
+          IconButton(
+            icon: Icon(Icons.calculate_rounded),
+            onPressed: () {},
+          )
         ],
       ),
       body: Column(
@@ -48,40 +55,46 @@ class _CocktailPageState extends State<CocktailPage> {
         children: [
           Expanded(
             child: ListView(
-              reverse: true,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 10.0),
+                      horizontal: 16.0, vertical: 0.0),
                   child: Image.network(
                     widget._cocktail.imageSource,
                     height: 300,
                   ),
                 ),
-                Text(widget._cocktail.description),
-                Text('Degree: ' +
-                    ((widget._cocktail.degree != null)
-                        ? widget._cocktail.degree.toString()
-                        : 'No information')),
-                Text('Group: ' +
-                    widget._cocktail.group
-                        .toString()
-                        .replaceFirst('CocktailGroup.', '')),
-                Text('Basis: ' +
-                    ((widget._cocktail.basis != null)
-                        ? widget._cocktail.basis.toString()
-                        : 'No information')),
-                Text('Volume: ' +
-                    ((widget._cocktail.volume != null)
-                        ? widget._cocktail.volume.toString()
-                        : 'No information')),
+                //Text(widget._cocktail.description),
+                InfoBlockCard(
+                  children: [
+                    InfoListTile(
+                      title: 'Degree',
+                      value: widget._cocktail.degree,
+                    ),
+                    InfoListTile(
+                      title: 'Group',
+                      value: describeEnum(widget._cocktail.group),
+                    ),
+                    InfoListTile(
+                      title: 'Basis',
+                      value: widget._cocktail.basis,
+                    ),
+                    InfoListTile(
+                      title: 'Volume',
+                      value: widget._cocktail.volume,
+                    ),
+                  ],
+                ),
                 ExpansionPanelList(
                   children: [
                     ExpansionPanel(
                       canTapOnHeader: true,
                       headerBuilder: (context, isExpanded) {
                         return ListTile(
-                          title: Text('Recipe'),
+                          title: Text(
+                            'Recipe',
+                            style: TextStyle(color: kTitleGreyColor),
+                          ),
                         );
                       },
                       body: Column(
@@ -104,7 +117,10 @@ class _CocktailPageState extends State<CocktailPage> {
                       canTapOnHeader: true,
                       headerBuilder: (context, isExpanded) {
                         return ListTile(
-                          title: Text('Ingredients'),
+                          title: Text(
+                            'Ingredients',
+                            style: TextStyle(color: kTitleGreyColor),
+                          ),
                         );
                       },
                       body: Column(
@@ -162,7 +178,10 @@ class _CocktailPageState extends State<CocktailPage> {
                       canTapOnHeader: true,
                       headerBuilder: (context, isExpanded) {
                         return ListTile(
-                          title: Text('Tools'),
+                          title: Text(
+                            'Tools',
+                            style: TextStyle(color: kTitleGreyColor),
+                          ),
                         );
                       },
                       body: Column(
@@ -227,7 +246,7 @@ class _CocktailPageState extends State<CocktailPage> {
                 SizedBox(
                   height: 15,
                 ),
-              ].reversed.toList(),
+              ],
             ),
           ),
         ],

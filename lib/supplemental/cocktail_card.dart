@@ -32,15 +32,21 @@ class CocktailCard extends StatelessWidget {
                   ? Icon(Icons.favorite_rounded)
                   : Icon(Icons.favorite_border_rounded),
               color: isInFavorite ? Colors.redAccent : null,
-              onPressed: isInFavorite
-                  ? () {
-                      var favorite = context.read<FavoriteCocktailsNotifier>();
-                      favorite.remove(cocktail);
-                    }
-                  : () {
-                      var favorite = context.read<FavoriteCocktailsNotifier>();
-                      favorite.add(cocktail);
-                    }),
+              onPressed: () {
+                var favorite = context.read<FavoriteCocktailsNotifier>();
+                isInFavorite
+                    ? favorite.remove(cocktail)
+                    : favorite.add(cocktail);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(isInFavorite ?  'Cocktail removed' : 'Cocktail added'),
+                  action: SnackBarAction(
+                    label: 'Go to favorite',
+                    textColor: kTitleGreyColor,
+                    onPressed: () => Navigator.pushNamed(context, '/favorite'),
+                  ),
+                ));
+              }),
           backgroundColor: Colors.black45,
         ),
       ),
@@ -53,7 +59,8 @@ class CocktailCard extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           child: Padding(
-            padding: EdgeInsets.only(top: 32.0, bottom: 64.0, left: 32.0, right: 32.0),
+            padding: EdgeInsets.only(
+                top: 32.0, bottom: 64.0, left: 32.0, right: 32.0),
             child: Ink.image(
               image: NetworkImage(cocktail.imageSource),
             ),

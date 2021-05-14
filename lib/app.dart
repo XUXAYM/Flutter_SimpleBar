@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:simplebar/page/can_make_cocktails_page.dart';
 
 import 'page/loading_page.dart';
 import 'provider/settings_notifier.dart';
@@ -25,6 +26,7 @@ class _SimpleBarAppState extends State<SimpleBarApp> {
       themeMode: Provider.of<SettingsNotifier>(context).mode,
       routes: {
         '/favorite': (context) => FavoriteCocktailsPage(),
+        '/can_make': (context) => CanMakeCocktailsPage(),
         '/loading_page' : (context) => LoadingPage(),
         '/main' : (context) => Backdrop(
           currentPage: Provider.of<PagesPoolNotifier>(context).currentFrontPage,
